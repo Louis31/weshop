@@ -1,0 +1,145 @@
+package com.controller.struts2.power;
+
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.common.WebGlobal;
+import com.controller.struts2.BaseController;
+import com.cxstock.biz.power.dto.UserDTO;
+import com.cxstock.utils.pubutil.Page;
+import com.cxstock.utils.system.Constants;
+import com.service.UserBiz;
+
+@SuppressWarnings("serial")
+@Controller
+@RequestMapping("/user")
+public class UserController extends BaseController  {
+	
+	@Autowired
+	private UserBiz userBiz;
+	
+//	private Integer userid;
+//	private String logincode;
+//	private String password;
+//	private String username;
+//	private Integer roleid;
+//	private Integer state;
+//	private String bz;
+	
+	/** 登录验证 */
+	@RequestMapping(value="/login")
+	public String login(String logincode,String password,HttpServletRequest request) {
+		try{
+			String code = logincode.trim().toLowerCase();
+			String pass = password.trim().toLowerCase();
+			UserDTO userInfo = userBiz.login(code, pass);
+			if (userInfo != null) {
+				request.getSession().setAttribute(Constants.USERINFO, userInfo);
+				//this.getSession().setAttribute(Constants.USERINFO, userInfo);
+				return "redirect:/admin";
+			} else{
+				//request.getSession().setAttribute(Constants.USERINFO, userInfo);
+				request.getSession().setAttribute("error", "用户名或密码错误");
+				return "login";
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+			//this.getRequest().setAttribute("error", "连接失败");
+			return "login";
+		}
+	}
+	
+	/** 用户权限菜单 */
+	@RequestMapping(value="/getMenuBuf")
+	@ResponseBody
+	public String getMenuBuf(HttpServletRequest request) {
+		UserDTO userInfo = (UserDTO) request.getSession().getAttribute(Constants.USERINFO);
+		try {
+			if(userInfo!=null){
+				return userInfo.getUsermenu();
+			}else {
+				return  this.outError();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return  this.outError();
+		}
+	}
+	
+	/** 
+	 * 分页查询用户列表 
+	 */
+	@RequestMapping(value="/findPageUser")
+	@ResponseBody
+	public String findPageUser(Integer limit,int start) {
+		try {
+			Page page = new Page();
+			page.setStart(start);
+			page.setLimit(limit);
+			userBiz.findPageUser(page);
+			return this.outPageString(page);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return this.outError();
+		}
+	}	
+
+	/**
+	 * 保存/修改用户
+	 */
+	@RequestMapping(value="/saveOrUpdateUser")
+	@ResponseBody
+	public String saveOrUpdateUser(UserDTO dto) {
+		try {
+			boolean bool = userBiz.saveOrUpdateUser(dto);
+			if(bool){
+				if(dto!=null&&dto.getUserid()==null){
+					return "{success:true,message:'修改成功!'}";
+				}else{
+					return "{success:true,message:'保存成功!'}";
+				}
+			}else{
+				return "{success:false,errors:'用户账号已存在!'}";
+			}
+		} catch (Exception e) {
+			 e.printStackTrace();
+			 return this.outError();
+		}
+	}
+    
+	/** 
+	 * 客户下拉列表
+	 */
+	@RequestMapping(value="/findUserComb")
+	@ResponseBody
+	public String findUserComb() {
+		try {
+			return this.outListString(userBiz.findKhComb());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return this.outError();
+		}
+	}
+	
+	
+	/**
+	 * 删除用户
+	 */
+	@RequestMapping(value="/deleteUser")
+	@ResponseBody
+	public String deleteUser(Integer userid) {
+		try {
+			userBiz.deleteUser(userid);
+			return "{success:true}";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return this.outError();
+		}
+	}
+
+}

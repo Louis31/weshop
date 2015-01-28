@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,target-densitydpi=high-dpi,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+	<meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" >
+    <meta name="format-detection" content="telephone=no">
+<title>商品分类</title>
+<script src="js/jquery-2.1.1.min.js"></script>
+<link rel="stylesheet" type="text/css" href="css/index.css">
+<link rel="stylesheet" type="text/css" href="css/goods_class.css">
+<script>
+$(function(){
+	
+	
+	$("#roll_cart").css({"height":($(document.body).width()*0.51)});
+	$("#roll_cart li").css({"width":$(document.body).width(),"height":$("#roll_cart").height()});
+	//alert($("#roll_cart li").width());
+	$("#shuffling").css("height",$("#roll_cart").height());
+	$("#rollcar").css({"height":$("#roll_cart").height()});
+	
+	var current = 0;
+	function f(){
+		if(++current >4){
+			current = 0;
+		} 
+		$(".current").removeClass("current");
+		$(".tag li").eq(current).addClass("current");
+		$("#roll_cart").animate({left:-$("#roll_cart li").width()},1000,'linear',function(){
+			//alert($("#roll_cart")[0].scrollLeft);
+			if( $("#roll_cart")[0].scrollLeft >= 0 ){
+				$("#roll_cart li:first").insertAfter($("#roll_cart li:last"));
+				$("#roll_cart").css({left:0});
+			}
+			
+		});
+	}
+	var start = setInterval(f,4000);
+	
+	$("#roll_cart").onmouseover=function() {
+		clearInterval(start);
+	};
+	$("#roll_cart").onmouseout=function() {
+		start=setInterval(f,4000);
+	};
+});
+</script>
+</head>
+
+<body>
+
+<div class="main">
+	<div class="head">
+    	<div class="logo_div"><img src="images/logo.png" /></div>
+        <div class="search_div">
+        	<form id="myform" action="#">
+        	<div class="simg">
+            <img onClick="javascript:document.getElementById('myform').submit()" src="images/search.png" />
+            </div>
+            <div class="stext">
+            	<input type="text" placeholder="搜索宝贝" />
+            </div>
+            </form>
+        </div>    
+    </div>
+    <div class="g_c_main_out">
+    	<!--第一层-->
+       	<div class="g_c_main_line">
+			<div class="gc_layer">
+	            <div class="gc_layer_img1">
+	            	<img src="images/goods-class_03.png" />
+	        	</div>
+	        	<div class="gc_layer_span">
+	            	<span class="gc_layer_span_tiltle">彩妆</span>
+	            	<span class="gc_layer_span_det">BB霜/口红/彩妆套装/睫毛膏/粉饼…</span>
+	        	</div>
+	        	<div class="gc_layer_img2">
+	        	   <a href="list.html">
+	            	<img src="images/goods-class_06.png" />
+	            	</a>
+	        	</div>        
+		    </div>
+    	</div>
+    	<!--第二层-->
+    	<div class="g_c_main_line">
+			<div class="gc_layer">
+	            <div class="gc_layer_img1">
+	            	<img src="images/goods-class_03.png" />
+	        	</div>
+	        	<div class="gc_layer_span">
+	            	<span class="gc_layer_span_tiltle">彩妆</span>
+	            	<span class="gc_layer_span_det">BB霜/口红/彩妆套装/睫毛膏/粉饼…</span>
+	        	</div>
+	        	<div class="gc_layer_img2">
+	        	 <a href="list.html">
+	            	<img src="images/goods-class_06.png" />
+	            	</a>
+	        	</div>        
+		    </div>
+    	</div>
+    	<!--第二层-->
+    	<div class="g_c_main_line">
+			<div class="gc_layer">
+	            <div class="gc_layer_img1">
+	            	<img src="images/goods-class_03.png" />
+	        	</div>
+	        	<div class="gc_layer_span">
+	            	<span class="gc_layer_span_tiltle">彩妆</span>
+	            	<span class="gc_layer_span_det">BB霜/口红/彩妆套装/睫毛膏/粉饼…</span>
+	        	</div>
+	        	<div class="gc_layer_img2">
+	        	 <a href="list.html">
+	            	<img src="images/goods-class_06.png" />
+	            	</a>
+	        	</div>        
+		    </div>
+    	</div>
+    	<!--第二层-->
+    	<div class="g_c_main_line">
+			<div class="gc_layer">
+	            <div class="gc_layer_img1">
+	            	<img src="images/goods-class_03.png" />
+	        	</div>
+	        	<div class="gc_layer_span">
+	            	<span class="gc_layer_span_tiltle">彩妆</span>
+	            	<span class="gc_layer_span_det">BB霜/口红/彩妆套装/睫毛膏/粉饼…</span>
+	        	</div>
+	        	<div class="gc_layer_img2">
+	        	 <a href="list.html">
+	            	<img src="images/goods-class_06.png" />
+	            	</a>
+	        	</div>        
+		    </div>
+    	</div>
+    	<!--第二层-->
+    	<div class="g_c_main_line">
+			<div class="gc_layer">
+	            <div class="gc_layer_img1">
+	            	<img src="images/goods-class_03.png" />
+	        	</div>
+	        	<div class="gc_layer_span">
+	            	<span class="gc_layer_span_tiltle">彩妆</span>
+	            	<span class="gc_layer_span_det">BB霜/口红/彩妆套装/睫毛膏/粉饼…</span>
+	        	</div>
+	        	<div class="gc_layer_img2">
+	        	 <a href="list.html">
+	            	<img src="images/goods-class_06.png" />
+	            	</a>
+	        	</div>        
+		    </div>
+    	</div>
+    	<!--第二层-->
+    	<div class="g_c_main_line">
+			<div class="gc_layer">
+	            <div class="gc_layer_img1">
+	            	<img src="images/goods-class_03.png" />
+	        	</div>
+	        	<div class="gc_layer_span">
+	            	<span class="gc_layer_span_tiltle">彩妆</span>
+	            	<span class="gc_layer_span_det">BB霜/口红/彩妆套装/睫毛膏/粉饼…</span>
+	        	</div>
+	        	<div class="gc_layer_img2">
+	        	 <a href="list.html">
+	            	<img src="images/goods-class_06.png" />
+	            	</a>
+	        	</div>        
+		    </div>
+    	</div>
+    	    	<!--第二层-->
+    	<div class="g_c_main_line">
+			<div class="gc_layer">
+	            <div class="gc_layer_img1">
+	            	<img src="images/goods-class_03.png" />
+	        	</div>
+	        	<div class="gc_layer_span">
+	            	<span class="gc_layer_span_tiltle">彩妆</span>
+	            	<span class="gc_layer_span_det">BB霜/口红/彩妆套装/睫毛膏/粉饼…</span>
+	        	</div>
+	        	<div class="gc_layer_img2">
+	        	 <a href="list.html">
+	            	<img src="images/goods-class_06.png" />
+	            	</a>
+	        	</div>        
+		    </div>
+    	</div>
+    	    	<!--第二层-->
+    	<div class="g_c_main_line">
+			<div class="gc_layer">
+	            <div class="gc_layer_img1">
+	            	<img src="images/goods-class_03.png" />
+	        	</div>
+	        	<div class="gc_layer_span">
+	            	<span class="gc_layer_span_tiltle">彩妆——end</span>
+	            	<span class="gc_layer_span_det">BB霜/口红/彩妆套装/睫毛膏/粉饼…</span>
+	        	</div>
+	        	<div class="gc_layer_img2">
+	        	 <a href="list.html">
+	            	<img src="images/goods-class_06.png" />
+	            	</a>
+	        	</div>        
+		    </div>
+    	</div>
+    	    	<!--第二层-->
+    </div>
+	<div class="line_end"></div>
+     <!-- 底部 -->
+    <div class="layer_bottom">
+    	<div class="l20"><a href="/MyStock"><img src="images/home0.png" /></a></div>
+        <div class="l20"><a href="goods_class.html"><img src="images/sort0.png" /></a></div>
+        <div class="l20"><img src="images/cart0.png" /></div>
+        <div class="l20"><img src="images/find0.png" /></div>
+        <div class="l20"><a href="agent.html"><img src="images/mymanage1.png" /></a></div>
+    </div>
+    <!-- 底部	END-->
+    
+</div>
+
+</body>
+</html>

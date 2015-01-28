@@ -1,0 +1,44 @@
+package com.service;
+
+import java.util.List;
+
+import com.entities.Information;
+
+public interface InformationBiz {
+
+	/**
+	 * 根据类别获取资讯，类别为0时，获取全部
+	 */
+	public List<Information> getInformationBytree(long treeId,int page,int pagesize);
+	
+	/**
+	 * 根据类别获取资讯总数，类别为0时，获取全部
+	 */
+	public int getInformationCount(long treeId);
+	
+	/**
+	 * 新增资讯
+	 */
+	public void saveInformation(Information dto);
+	
+	
+	/**
+	 * 修改资讯
+	 */
+	public void updateInformation(Information dto);
+	
+	/**
+	 * 删除资讯
+	 */
+	public void deleteInformation(long id);
+	
+	/**
+	 * 增加资讯点击数
+	 */
+	public void clickInformation(long id,int sum);
+	
+	/**
+	 * 增加资讯收藏数
+	 */
+	public void collectInformation(long id,int sum);
+}

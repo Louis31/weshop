@@ -1,0 +1,145 @@
+/*!
+ * 进货入库
+ */
+Ext.onReady(function(){
+	
+	Ext.QuickTips.init();
+	private long id;
+	private String infoname;
+	private long pid;
+	var InfoObj = [
+		{ name:'id', type:'int'},
+		{ name:'infoname', type:'string'},
+		{ name:'pid', type:'int'}
+	];
+	var v_spid="0", v_spname=""
+	//商品数据
+	var jhspStore = new Ext.data.JsonStore({
+	    url: ctx+'/spxx/findPageSpxx.do',
+	    root: 'root',
+	    totalProperty: 'total',
+	    fields: SpxxObj,
+	    listeners:{beforeload:function(a){a.baseParams={start:v_start, limit:v_limit};}}
+	});
+	
+	//评论列表
+    var jhspGrid = new Ext.grid.GridPanel({
+    	id:'djspGrid',
+    	layout:'fit',
+    	viewConfig : {
+    		  forceFit: true
+    	},
+        store: jhspStore,
+        cm: new Ext.grid.ColumnModel({
+			defaults: {	menuDisabled : false},//禁止表头菜单
+			
+			columns:[
+				{header: '类别名称', flex : 1, sortable:true, dataIndex: 'id'},
+	            {header: '操作', flex : 1, sortable:true, align:'center', dataIndex: 'spid',renderer:function(){
+	            	return "<a>删除</a>";
+	            }}
+	            ]
+        }),
+        stripeRows: true, 	//行分隔符
+        columnLines : true, //列分隔符
+        margins:'20',
+        style:'border:1px solid',
+		region:'center',
+        iconCls:'',
+        
+        bbar:[
+         {text:'新增',iconCls:'btn-add',handler:function(){
+        	 var search = document.getElementById("KeyWord").value;
+        	 store.load({params:{search:search}});
+         }}]
+        ,
+        listeners:{}
+    });
+    
+	//供应商下拉数据
+    var gysStore = new Ext.data.JsonStore({
+		url: ctx+'/gys/findGysComb.do',
+	    root: 'root',
+	    totalProperty: 'total',
+	    fields: ['value','text'],
+	    listeners:{
+	    	load:function(s){
+	    		r = s.getAt(0);
+	    		if(r){
+	    			Ext.getCmp("gyscombo").onSelect(r, 0);
+	    		}
+	    	}
+	    }
+	});
+    
+	
+	
+    //  add
+    //商品表单
+    var addForm = new Ext.FormPanel({
+		layout : 'form',
+		frame:true,
+		labelWidth:60,
+		border : false,
+		padding : '15 10 0 8',
+		defaults : {
+			anchor : '100%'
+		},
+		items:[
+			{
+				xtype : "textfield",
+				name:"name",
+				fieldLabel:"资讯类别",
+				allowBlank : false,
+				maxLength :20
+			}
+		]
+	});
+    
+  //增加商品窗口
+    var addWindow = new Ext.Window({
+		title : '增加类别',
+		width:"50%",
+		height:200,
+		closeAction:'hide',
+		modal : true,
+		border:false,
+		resizable : false,
+		layout : 'fit',
+		buttonAlign : 'center',
+		items : [addForm],
+		buttons : [{
+			text : '保存',
+			handler : function() {
+				
+			}
+		}, {
+			text : '取消',
+			handler : function() {
+				
+			}
+		}]
+	});
+    // add
+  
+	//布局
+    new Ext.Viewport({
+		layout:'fit',
+		items:[{
+			frame:true,
+			title:'',
+			iconCls:'menu-11',
+			layout:'border',
+			items:[jhspGrid]
+		}],
+		listeners:{
+			render:function(){
+				
+			}
+		}
+	});
+	
+ 
+	
+
+});

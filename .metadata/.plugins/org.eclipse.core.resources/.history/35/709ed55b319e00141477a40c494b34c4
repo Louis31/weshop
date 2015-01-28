@@ -1,0 +1,8 @@
+package com.dao.impl;
+
+import com.base.BaseDaoImpl;
+import com.pojo.SpxxImage;
+
+public class SpxxImageDaoImpl extends BaseDaoImpl<SpxxImage> {
+
+}

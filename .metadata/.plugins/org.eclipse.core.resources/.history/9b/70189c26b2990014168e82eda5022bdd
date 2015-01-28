@@ -1,0 +1,128 @@
+package com.controller;
+
+import java.io.IOException;
+
+import net.sf.json.JSONObject;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+
+import com.common.SysContext;
+
+/**
+ * 
+ * @ClassName: OauthUtil
+ * @Description: 网页授权工具类
+ * @author liurb
+ * @date 2014-3-12 下午8:58:10
+ * 
+ */
+public class OAuth2Util {
+
+    private static final Logger logger = Logger.getLogger(OAuth2Util.class);
+
+   // private static PropertyContext propertyContext = PropertyContext.PropertyContextFactory("weChat.properties");
+
+    /**
+     * 
+     * @Title: getCode
+     * @Description: 用户同意授权，获取code
+     * @return
+     */
+    public static String getCode() {
+        // http://open.weixin.qq.com/connect/oauth2/authorize?
+        // appid=wx5545f0a87191d212&redirect_uri=http://weixintest.10155.com/wechat/getCode.html
+        // &response_type=code&scope=snsapi_base&state=2#wechat_redirect
+    	
+        String url = SysContext.getConfig("oauth.authorize_url") + "?appid=" + SysContext.getConfig("appid") 
+            + "&redirect_uri=" + SysContext.getConfig("oauth.redirect_uri") 
+            + "&response_type=code&scope=snsapi_base&state=2#wechat_redirect";
+        logger.info("getcoe------->" + url);
+        
+        return url;
+    }
+    
+    /**
+     * @Title: getCodeWithSuffix
+     * @Description: 用户同意授权，获取code
+     * @param redirect_uri 重定向地址
+     * @return url   
+     * @throws
+     */
+    public static String getCodeWithSuffix(String suffix) {    	
+        String url = SysContext.getConfig("oauth.authorize_url") + "?appid=" + SysContext.getConfig("appid") 
+            + "&redirect_uri=" +SysContext.getConfig("oauth.domain_name")+ suffix 
+            + "&response_type=code&scope=snsapi_base&state=2#wechat_redirect";
+        logger.info("getcoe------->" + url);
+        
+        return url;
+    }
+    /**
+     * @Title: getCodeWithSuffix
+     * @Description: 用户同意授权，获取code
+     * @param redirect_uri 重定向地址(不带参数)
+     * @param redirectUrl 二次重定向地址(参数之间使用“_”分割,)
+     * @return url   
+     * @throws
+     */
+    public static String getCodeWithSuffix(String suffix,String redirectUrl) {    	
+//    	String url = propertyContext.get("oauth.authorize_url") + "?appid=" + propertyContext.get("appid") 
+//    			+ "&redirect_uri=" +propertyContext.get("oauth.domain_name")+ suffix 
+//    			+ "&response_type=code&scope=snsapi_base&state=/wostar2/singer/toSingerBoard.do?singerLabel=bjPreliminary_loginName=111#wechat_redirect";
+//    	logger.info("getcoe------->" + url);
+    	if(StringUtils.isBlank(redirectUrl)){
+    		redirectUrl = "";
+    	}
+    	String url = SysContext.getConfig("oauth.authorize_url") + "?appid=" + SysContext.getConfig("appid") 
+    			+ "&redirect_uri=" +SysContext.getConfig("oauth.domain_name")+ suffix 
+    			+ "&response_type=code&scope=snsapi_base&state="+redirectUrl+"#wechat_redirect";
+    	logger.info("getcoe------->" + url);
+    	
+    	return url;
+    }
+
+    /**
+     * 功能说明 : 通过授权code换取用户唯一标识
+     *
+     * @param code 授权码
+     * @return
+     * @time Mar 13, 2014 3:53:30 PM
+     */
+    public static String getOpenId(String code) {
+        logger.info("用户同意授权，获取code :" + code);
+        
+        String appid = SysContext.getConfig("appid");
+        String secret = SysContext.getConfig("secret");
+        String redirtUrl = SysContext.getConfig("oauth.access_token_url") + "?appid=" + appid + "&secret=" + secret + "&code=" + code + "&grant_type=authorization_code";
+        
+        logger.info("redirtUrl: " + redirtUrl);
+        
+        HttpClient client = new HttpClient();
+        client.getParams().setContentCharset("UTF-8");
+        client.getParams().setHttpElementCharset("UTF-8");
+        PostMethod postMethod = new PostMethod(redirtUrl);
+        String result = "";
+        try {
+            int statusCode = client.executeMethod(postMethod);
+            if (statusCode == HttpStatus.SC_OK) {
+                byte[] responseBody = postMethod.getResponseBody();
+                result = new String(responseBody);
+                logger.info(code + "<|>result:" + result);
+                // 获取返回是的openid
+                JSONObject json = JSONObject.fromObject(result);
+                Object obj = json.get("openid");
+                if (obj != null) {
+                    return obj.toString();
+                }
+            } else {
+                logger.info("请求失败:" + redirtUrl);
+            }
+        } catch (HttpException e) {
+            logger.error("HttpException", e);
+        } catch (IOException e) {
+            logger.error("IOException", e);
+        } 
+
+        return null;
+    }
+}

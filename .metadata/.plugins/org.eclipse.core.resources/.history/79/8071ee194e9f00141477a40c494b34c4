@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<%@ page language="java" pageEncoding="UTF-8"%>
+<html>
+<head>
+<%@include file="../common/import-tags.jsp"%>
+<%@include file="../common/import-static.jsp"%>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,target-densitydpi=high-dpi,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+	<meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" >
+    <meta name="format-detection" content="telephone=no">
+<title>彩妆</title>
+<script>
+String.prototype.replaceAll = function(s1,s2){
+	return this.replace(new RegExp(s1,"gm"),s2);
+}
+
+$(function(){
+	$("#l_otop .l25").click(function(){
+		$("#l_otop").find(".l_red0").removeClass("l_red0");
+		$(this).find(".l_ospan").addClass("l_red0");
+		
+		if($(this).find("img").attr("src")){
+			
+			if($(this).find("img").attr("class")=="ascimg"){
+				$(this).find("img").removeClass("ascimg").addClass("descimg").attr("src", "images/desc.png");
+			}else{
+				$(this).find("img").removeClass("descimg").addClass("ascimg").attr("src", "images/asc.png");
+			};
+			
+		}else{
+			$("#l_otop").find("img").appendTo(this);
+		}
+		
+	});
+});
+var lbid = "${param.lbid}";
+var strModel = '<div class="layer3">'+
+ '<div style="" class="l_main">'+
+ '<div class="l39"><a href="content.jsp?spid=%SPID%"><img src="${ctx}/upload%_URL_%" /></a></div>'+
+ '<div class="r58">'+
+	'<div class="f13"><a class="i_hotpname" href="content.jsp?spid=%SPID%">%NAME%</a></div>'+
+    '<div class="l_price">￥%CHPRICE%</div>'+
+    '<div class="layer3">原价<span style="text-decoration:line-through;">￥%SCPRICE%</span></div>'+
+   ' <div class="layer">'+
+   ' <span class="discount">%ZHEKOU%折</span>'+
+    '<span style="" class="hassold">已售1354件</span>'+
+    '</div></div></div></div>';
+
+    $(document).ready(function(){
+   	 $.ajax({
+            data:{start:0,limit:20,lbid:lbid},
+            url: "${ctx}/spxx/findFontPageSpxx",//要访问的后台地址
+            complete :function(){},
+            success: function(data){
+            	var data = eval( "(" + data + ")" );
+            	if(data.total>0){
+             	   $.each(data.root, function(i, n){
+             		 var str = strModel;
+             		 str = str.replaceAll("%SPID%",n.spid);
+             		 str = str.replaceAll("%NAME%",n.spname);
+             		 str = str.replaceAll("%CHPRICE%",n.chprice);
+             		 str = str.replaceAll("%SCPRICE%",n.scprice);
+             		 str = str.replaceAll("%ZHEKOU%",n.chprice/n.scprice*10);
+             		 $("#container").append($(str));
+             		 $("#container").append($('<div class="line1"></div>'));
+             	   });   	 
+              }
+            }
+        });
+    });
+</script>
+</head>
+<body>
+<div class="main">
+	<div class="head">
+    	<div class="backdiv">
+        	<a href="javascript:history.back(-1)"><img src="${ctx}/static/images/det_order_06.png" /></a>
+        </div>
+        <div class="l20 l_title">
+        	彩妆
+        </div>
+        <div class="search_div long_s">
+        	<form id="myform" action="#">
+        	<div class="simg">
+            <img onclick="javascript:document.getElementById('myform').submit()" src="${ctx}/static/images/search.png">
+            </div>
+            <div class="stext">
+            	<input placeholder="搜索宝贝" type="text">
+            </div>
+            </form>
+        </div>
+    </div>
+    
+    <div class="layer">
+    	<div class="l_ohead">
+        	<div style="" class="l_main" id="l_otop">
+            	<div class="l25 textcenter" id="l_oprice"><span class="l_ospan l_red0">价格 </span><img class="ascimg" src="${ctx}/static/images/asc.png" /></div>
+            	<div class="l25 textcenter"><span style="float:left;">|</span><span class="l_ospan">销量</span></div>
+                <div class="l25 textcenter"><span style="float:left;">|</span><span class="l_ospan">人气</span></div>
+                <div class="l25 textcenter"><span style="float:left;">|</span><span class="l_ospan">活动</span></div>
+            </div>
+        	
+        </div>
+    </div>
+    <div id="container">
+    
+    </div>
+</div>
+</body>
+</html>

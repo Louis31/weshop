@@ -1,0 +1,359 @@
+package com.controller.struts2.ziliao;
+
+
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.http.HttpRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.common.WebGlobal;
+import com.controller.struts2.BaseController;
+import com.pojo.Splb;
+import com.pojo.Spxx;
+import com.pojo.SpxxImage;
+import com.service.SpxxBiz;
+import com.service.SpxxImageBiz;
+import com.cxstock.biz.power.dto.UserDTO;
+import com.cxstock.utils.pubutil.Page;
+import com.cxstock.utils.system.Constants;
+
+@SuppressWarnings("serial")
+@Controller
+@RequestMapping("/spxx")
+public class SpxxController extends BaseController  {
+	
+	@Autowired
+	private SpxxBiz spxxBiz;
+	
+	@Autowired
+	private SpxxImageBiz spxxImageBiz;
+	
+//	private String shState;
+//	
+//	public void setShState(String shState) {
+//		this.shState = shState;
+//	}
+
+//	private String spid;
+//	private String spname;
+//	private String xinghao;
+//	private String dw;
+//	private Double jhprice;
+//	private Double chprice;
+//	private Double scprice;
+//	private Integer minnum;
+//	private String csname;
+//	private String bz;
+//	
+//	private Integer lbid;
+//	private String lbname;
+//	
+//	private String search;
+//	private String addupdate;
+//	private String usable;
+//	
+//	public void setUsable(String usable) {
+//		this.usable = usable;
+//	}
+	
+	@RequestMapping("/content")
+	public String getContentPage(String spid,Model model){
+		 Spxx spxx = spxxBiz.findOneSpxxById(spid);
+		
+		 List<SpxxImage> list = spxxImageBiz.findImageByAll(spid);
+		 model.addAttribute("spxx", spxx);
+		 model.addAttribute("imageList", list);
+		 return  WebGlobal.getAdminViewPath()+"/main/content";
+	}
+	
+	@RequestMapping("/font")
+	@ResponseBody
+	public String getFontPage(String spid){
+		 List<SpxxImage> list = spxxImageBiz.findImageByAll(spid);
+         return this.outListString(list);
+	}
+	
+	
+	/** 
+	 * 分页查询商品信息列表 
+	 */
+	@RequestMapping(value="/findPageSpxxImage")
+	@ResponseBody
+	public String findPageSpxxImage(Page page,String spid) {
+		try {
+			if(page==null){
+				page = new Page();
+				page.setStart(1);
+				page.setLimit(10);
+			}
+			if(spid!=null&&!StringUtils.isEmpty(spid)){
+				page.setWheres("  where t.spid='"+spid +"'");
+			}else{
+				page.setWheres("  where 1=2");
+			}
+			spxxImageBiz.findPageSpxx(page);
+			return this.outPageString(page);
+		} catch (Exception e) {
+			return this.outError();
+		}
+	}	
+
+	/*
+	 * 商品编号
+	 */
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value="/getSpxxCode")
+	@ResponseBody
+	public String getSpxxCode() {
+		try {
+			String code = spxxBiz.getSpxxCode();
+			return code;
+		} catch (Exception e) {
+			return this.outError();
+		}
+	}
+	
+	/** 
+	 * 分页查询商品信息列表 
+	 */
+	@RequestMapping(value="/findPageSpxx")
+	@ResponseBody
+	public String findPageSpxx(Page page,Integer lbid,String search) {
+		try {
+//			Page page = new Page();
+//			page.setStart(this.getStart());
+//			page.setLimit(this.getLimit());
+			if(page==null){
+				page = new Page();
+				page.setStart(1);
+				page.setLimit(10);
+			}
+			if(lbid!=null&&lbid!=0){
+				page.setWheres("  where t.lbid="+lbid +" or t.lbpid="+lbid);
+			}else if(search!=null&&!"".equals(search)){
+				StringBuffer buf = new StringBuffer(" where t.spid like '%");
+				buf.append(search);
+				buf.append("%' or t.spname like '%");
+				buf.append(search);
+				buf.append("%'");
+				page.setWheres(buf.toString());
+			}
+			spxxBiz.findPageSpxx(page);
+			return this.outPageString(page);
+		} catch (Exception e) {
+			return this.outError();
+		}
+	}	
+	
+	@RequestMapping(value="/findOneById")
+	@ResponseBody
+	public String findOneById(String spid) {
+		try{
+			Spxx obj=spxxBiz.findOneSpxxById(spid);
+            return this.outObjectString(obj);
+		}catch (Exception e) {
+			e.printStackTrace();
+			return this.outError();
+		}
+	}
+	
+	
+	/** 
+	 * 期初库存备选商品列表
+	 */
+	@RequestMapping(value="/findKcPageSpxx")
+	@ResponseBody
+	public String findKcPageSpxx(Page page,String search) {
+		try {
+			if(page==null){
+				page = new Page();
+				page.setStart(0);
+				page.setLimit(20);
+			}
+			StringBuffer buf = new StringBuffer();
+			if(search!=null&&!"".equals(search)){
+				buf = new StringBuffer(" where t.spid like '%");
+				buf.append(search);
+				buf.append("%' or t.spname like '%");
+				buf.append(search);
+				buf.append("%'");
+				page.setWheres(buf.toString());
+			}else{
+				buf = new StringBuffer(" where t.state=0");
+			}
+			page.setWheres(buf.toString());
+			spxxBiz.findPageSpxx(page);
+			return this.outPageString(page);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return this.outError();
+		}
+	}
+
+	/**
+	 * 保存/修改商品信息
+	 */
+	@RequestMapping(value="/saveOrUpdateSpxx")
+	@ResponseBody
+	public String saveOrUpdateSpxx(Spxx spxx,String addupdate,HttpServletRequest request) {
+		try {
+			Splb splb =spxxBiz.findOneSplbById(spxx.getLbid());
+			if(splb!=null){
+				spxx.setLbpid(splb.getPid());
+			}else {
+				spxx.setLbpid(0);
+			}
+
+			if(spxx == null){
+				return this.outError();
+				}
+			if("add".equals(addupdate)){
+				
+				UserDTO obj = (UserDTO) request.getSession().getAttribute(Constants.USERINFO);
+				
+				if(obj!=null){}
+				
+				if(spxx.getAreacode()==null){
+					spxx.setAreacode("");
+				}
+				
+				if(spxx.getJhprice()==null){
+					spxx.setJhprice(0d);
+					spxx.setScjj(0d);
+				}
+				if(spxx.getChprice()==null)
+					spxx.setChprice(0d);
+				
+				if(spxx.getScprice()==null)
+					spxx.setScprice(0d);
+				
+				if(spxx.getMinnum()==null)
+					spxx.setMinnum(0);
+				
+				spxx.setUsable("1");
+				spxxBiz.save(spxx);
+				return "{success:true,message:'保存成功!'}";
+			}else{
+				spxxBiz.updateSpxx(spxx);
+				return "{success:true,message:'修改成功!'}";
+			}
+		} catch (Exception e) {
+			 e.printStackTrace();
+			 return this.outError();
+		}
+	}
+    
+	/**
+	 * 删除商品信息
+	 */
+	@RequestMapping(value="/deleteSpxx")
+	@ResponseBody
+	public String deleteSpxx(String spid) {
+		try {
+			boolean bool = spxxBiz.deleteSpxx(spid);
+			if(bool){
+				return "{success:true}";
+			}else{
+				return "{success:false,error:'该商品已经发生单据，不能删除。'}";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return this.outError();
+		}
+	}
+	
+	/**
+	 * 发布商品信息
+	 */
+	@RequestMapping(value="/publishSpxx")
+	@ResponseBody
+	public String publishSpxx(String spid) {
+		try {
+			boolean bool = spxxBiz.publishSpxx(spid);
+			if(bool){
+				return "{success:true}";
+			}else{
+				return "{success:false,error:'该商品已经不能发布。'}";
+			}
+		} catch (Exception e) {
+			return this.outError();
+		}
+	}
+	
+	/**
+	 * 发布商品信息
+	 */
+	@RequestMapping(value="/publishSHSpxx")
+	@ResponseBody
+	public String publishSHSpxx(String spid,String shState) {
+		try {
+			boolean bool = spxxBiz.publishSHSpxx(spid, shState);
+			if(bool){
+				return "{success:true}";
+			}else{
+				return "{success:false,error:'该商品已经不能发布。'}";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return this.outError();
+		}
+	}
+	
+	/**
+	 * 发布商品信息
+	 */
+	@RequestMapping(value="/changeSpxxstate")
+	@ResponseBody
+	public String changeSpxxstate(String spid,String shState) {
+		try {
+			boolean bool = spxxBiz.changeSpxxState(spid, shState);
+			if(bool){
+				return "{success:true}";
+			}else{
+				return "{success:false,error:'该商品已无法进行该操作。'}";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return this.outError();
+		}
+	}
+	
+	/** 
+	 * 分页查询商品信息列表 
+	 */
+	@RequestMapping(value="/findFontPageSpxx")
+	@ResponseBody
+	public String findFontPageSpxx(Page page,Integer lbid,String search) {
+		try {
+			if(page==null){
+				page = new Page();
+				page.setStart(0);
+				page.setLimit(20);
+			}
+			if(lbid!=null&&lbid!=0){
+				page.setWheres(" where t.lbid="+lbid +" or t.lbpid="+lbid+" and t.usable=4 or t.usable=6 or t.usable=7 or t.usable=8");
+			}else if(search!=null&&!"".equals(search)){
+				StringBuffer buf = new StringBuffer(" where t.spid like '%");
+				buf.append(search);
+				buf.append("%' or t.spname like '%");
+				buf.append(search);
+				buf.append("%'");
+				page.setWheres(buf.toString());
+			}
+			spxxBiz.findPageSpxx(page);
+			return this.outPageString(page);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return this.outError();
+		}
+	}	
+
+}

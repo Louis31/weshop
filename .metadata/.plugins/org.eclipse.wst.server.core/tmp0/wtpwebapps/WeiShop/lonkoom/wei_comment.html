@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,target-densitydpi=high-dpi,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+	<meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" >
+    <meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" type="text/css" href="css/index.css"/>
+	<link rel="stylesheet" type="text/css" href="css/wei_shopping.css"/>
+	<title>待评价</title>
+</head>
+	<body>
+		<script src="js/jquery-2.1.1.min.js"></script>
+<script src="js/layer/layer.min.js"></script>
+<script>
+	<!--
+    $(function(){
+		$(".showlink").click(function(){
+			
+			$.layer({
+				type: 1,
+				area: ['auto', 'auto'],
+				title: false,
+				border: [0],
+				page: {html : '<div id="orderdetails"><div style="font-size:1.5em;" class="textcenter layer2">待付款</div><div class="line2"></div><div class="layer2 w90">销售额：<span class="fr f8d">442247</span></div><div class="line2"></div><div class="layer2 w90">销售量：<span class="fr f8d">4447</span></div><div class="line2"></div><div class="layer2 w90">销售人：<span class="fr ftag2">李明</span></div><div class="line2"></div><div class="layer2 w90">已收款：<span class="fr f8d">400000</span></div><div class="line2"></div><div class="layer2 w90">应收款：<span class="fr f8d">22244</span></div><div class="line2"></div><div class="layer2 w90">备注：<span class="fr f8d">广州市天河区</span></div></div>'}
+			});
+			$(".xubox_layer").css({"margin-left":"-45%","width":"90%"});
+			$("#orderdetails").css({"width":$(window).width()*0.9+"px"});
+			$(".xubox_main").css({"height":$("#orderdetails").height()*1.1});
+			//alert($(window).width()*0.9);
+		});
+
+	});
+	//-->
+</script>
+		<div class="main_shopping">
+			<div class="head">
+	    		<div class="backdiv"></div><div class="c_title">待评价</div>
+	    	</div>
+	    	<div class="shop_search">
+	    		<input class="star_time" placeholder=" 开始时间"/>
+	    			<span>到</span>
+	    		<input class="end_time" placeholder=" 结束时间"/>
+	    		<button class="search_botton" type="button">查询</button>
+	    	</div>
+	    	<div class="shop_list_title">
+	    		<span class="s_l_2">序号</span>
+	    		<span class="s_l_1">订单编号</span>
+	    		<span class="s_l_1">完成时间</span>
+	    		<span class="s_l_1">订单金额</span>
+	    		<span class="s_l_3">专享价</span>
+	    		<span class="s_l_1">查看详情</span>
+	    	</div>
+	    	<div class="shop_list_content">
+	    		<span class="s_l2_2">1</span>
+	    		<span class="s_l2_1">267347</span>
+	    		<span class="s_l2_1">141217</span>
+	    		<span class="s_l2_1">186</span>
+	    		<span class="s_l2_3">267</span>
+	    		<span class="s_l2_4"><a href="javascript:void(0);" class="showlink"><img class="s_l2_1_img" src="images/shopping_07.png" /></a> </span>
+	    	</div>
+	    	<div class="shop_list_content">
+	    		<span class="s_l2_2">1</span>
+	    		<span class="s_l2_1">267347</span>
+	    		<span class="s_l2_1">141217</span>
+	    		<span class="s_l2_1">186</span>
+	    		<span class="s_l2_3">267</span>
+	    		<span class="s_l2_4"><a href="javascript:void(0);" class="showlink"><img class="s_l2_1_img" src="images/shopping_07.png" /></a> </span>
+	    	</div>
+	    	<div class="shop_list_content">
+	    		<span class="s_l2_2">1</span>
+	    		<span class="s_l2_1">267347</span>
+	    		<span class="s_l2_1">141217</span>
+	    		<span class="s_l2_1">186</span>
+	    		<span class="s_l2_3">267</span>
+	    		<span class="s_l2_4"><a href="javascript:void(0);" class="showlink"><img class="s_l2_1_img" src="images/shopping_07.png" /></a> </span>
+	    	</div>
+	    	<div class="shop_list_content">
+	    		<span class="s_l2_2">1</span>
+	    		<span class="s_l2_1">267347</span>
+	    		<span class="s_l2_1">141217</span>
+	    		<span class="s_l2_1">186</span>
+	    		<span class="s_l2_3">267</span>
+	    		<span class="s_l2_4"><a href="javascript:void(0);" class="showlink"><img class="s_l2_1_img" src="images/shopping_07.png" /></a> </span>
+	    	</div>
+	    	<div class="shop_list_content">
+	    		<span class="s_l2_2">1</span>
+	    		<span class="s_l2_1">267347</span>
+	    		<span class="s_l2_1">141217</span>
+	    		<span class="s_l2_1">186</span>
+	    		<span class="s_l2_3">267</span>
+	    		<span class="s_l2_4"><a href="javascript:void(0);" class="showlink"><img class="s_l2_1_img" src="images/shopping_07.png" /></a> </span>
+	    	</div>
+	    	<div class="shop_list_content">
+	    		<span class="s_l2_2">1</span>
+	    		<span class="s_l2_1">267347</span>
+	    		<span class="s_l2_1">141217</span>
+	    		<span class="s_l2_1">186</span>
+	    		<span class="s_l2_3">267</span>
+	    		<span class="s_l2_4"><a href="javascript:void(0);" class="showlink"><img class="s_l2_1_img" src="images/shopping_07.png" /></a> </span>
+	    	</div>
+	    	<div class="shop_list_content">
+	    		<span class="s_l2_2">1</span>
+	    		<span class="s_l2_1">267347</span>
+	    		<span class="s_l2_1">141217</span>
+	    		<span class="s_l2_1">186</span>
+	    		<span class="s_l2_3">267</span>
+	    		<span class="s_l2_4"><a href="javascript:void(0);" class="showlink"><img class="s_l2_1_img" src="images/shopping_07.png" /></a> </span>
+	    	</div>
+	    	<div class="shop_list_content">
+	    		<span class="s_l2_2">1</span>
+	    		<span class="s_l2_1">267347</span>
+	    		<span class="s_l2_1">141217</span>
+	    		<span class="s_l2_1">186</span>
+	    		<span class="s_l2_3">267</span>
+	    		<span class="s_l2_4"><a href="javascript:void(0);" class="showlink"><img class="s_l2_1_img" src="images/shopping_07.png" /></a> </span>
+	    	</div>
+	    	<div class="shop_list_content">
+	    		<span class="s_l2_2">1</span>
+	    		<span class="s_l2_1">267347</span>
+	    		<span class="s_l2_1">141217</span>
+	    		<span class="s_l2_1">186</span>
+	    		<span class="s_l2_3">267</span>
+	    		<span class="s_l2_4"><a href="javascript:void(0);" class="showlink"><img class="s_l2_1_img" src="images/shopping_07.png" /></a> </span>
+	    	</div>
+	    	<div class="shop_list_content">
+	    		<span class="s_l2_2">1</span>
+	    		<span class="s_l2_1">267347</span>
+	    		<span class="s_l2_1">141217</span>
+	    		<span class="s_l2_1">186</span>
+	    		<span class="s_l2_3">267</span>
+	    		<span class="s_l2_4"><a href="javascript:void(0);" class="showlink"><img class="s_l2_1_img" src="images/shopping_07.png" /></a> </span>
+	    	</div>
+	    	<div class="shop_list_content">
+	    		<span class="s_l2_2">1</span>
+	    		<span class="s_l2_1">267347</span>
+	    		<span class="s_l2_1">141217</span>
+	    		<span class="s_l2_1">186</span>
+	    		<span class="s_l2_3">267</span>
+	    		<span class="s_l2_4"><a href="javascript:void(0);" class="showlink"><img class="s_l2_1_img" src="images/shopping_07.png" /></a> </span>
+	    	</div>
+	    	<div class="shop_list_content">
+	    		<span class="s_l2_2">1</span>
+	    		<span class="s_l2_1">267347</span>
+	    		<span class="s_l2_1">141217</span>
+	    		<span class="s_l2_1">186</span>
+	    		<span class="s_l2_3">267</span>
+	    		<span class="s_l2_4"><a href="javascript:void(0);" class="showlink"><img class="s_l2_1_img" src="images/shopping_07.png" /></a> </span>
+	    	</div>
+	    	<div class="shop_list_content">
+	    		<span class="s_l2_2">1</span>
+	    		<span class="s_l2_1">267347</span>
+	    		<span class="s_l2_1">141217</span>
+	    		<span class="s_l2_1">186</span>
+	    		<span class="s_l2_3">267</span>
+	    		<span class="s_l2_4"><a href="javascript:void(0);" class="showlink"><img class="s_l2_1_img" src="images/shopping_07.png" /></a> </span>
+	    	</div>
+	    	<div class="shop_list_content">
+	    		<span class="s_l2_2">1</span>
+	    		<span class="s_l2_1">267347</span>
+	    		<span class="s_l2_1">141217</span>
+	    		<span class="s_l2_1">186</span>
+	    		<span class="s_l2_3">267</span>
+	    		<span class="s_l2_4"><a href="javascript:void(0);" class="showlink"><img class="s_l2_1_img" src="images/shopping_07.png" /></a> </span>
+	    	</div>
+	    	<div class="shop_list_content">
+	    		<span class="s_l2_2">1</span>
+	    		<span class="s_l2_1">267347</span>
+	    		<span class="s_l2_1">141217</span>
+	    		<span class="s_l2_1">186</span>
+	    		<span class="s_l2_3">267</span>
+	    		<span class="s_l2_4"><a href="javascript:void(0);" class="showlink"><img class="s_l2_1_img" src="images/shopping_07.png" /></a> </span>
+	    	</div>
+	    	<div class="shop_list_content">
+	    		<span class="s_l2_2">1</span>
+	    		<span class="s_l2_1">267347</span>
+	    		<span class="s_l2_1">141217</span>
+	    		<span class="s_l2_1">186</span>
+	    		<span class="s_l2_3">267</span>
+	    		<span class="s_l2_4"><a href="javascript:void(0);" class="showlink"><img class="s_l2_1_img" src="images/shopping_07.png" /></a> </span>
+	    	</div>
+	    	<div class="line_end"></div>
+	    	<!-- 底部 -->
+    <div class="layer_bottom">
+    	<div class="l20"><a href="index.html"><img src="images/home0.png" /></a></div>
+        <div class="l20"><a href="goods_class.html"><img src="images/sort0.png" /></a></div>
+        <div class="l20"><a href="goods_class.html"><img src="images/cart0.png" /></a></div>
+        <div class="l20"><img src="images/find0.png" /></div>
+        <div class="l20"><a href="goods_class.html"><img src="images/mymanage1.png" /></a></div>
+    </div>
+    <!-- 底部	END-->
+    	</div>
+	</body>
+</html>

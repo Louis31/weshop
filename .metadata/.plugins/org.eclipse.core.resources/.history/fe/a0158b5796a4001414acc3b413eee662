@@ -1,0 +1,199 @@
+package com.pojo;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
+/**
+ * Users entity.
+ * 
+ * @author MyEclipse Persistence Tools
+
+@Entity
+@Table(name = "Users")
+ */
+public class Users implements java.io.Serializable {
+
+	private static final long serialVersionUID = -5643963146787067887L;
+	private Integer userid;
+	@ManyToOne
+	@JoinColumn(name="roleid",nullable=false)
+	@Fetch(FetchMode.SELECT)
+	private Role role;
+	private String logincode;
+	private String password;
+	private String username;
+	private Integer state;
+	
+	private String tel;
+	private String email;
+	private String area_code;
+	private String area_name;
+	private String last_login;
+	private String history_operation;
+	private String wechat;
+
+	private String bz;
+	@OneToMany
+	private Set<Kh> khs = new HashSet<Kh>(0);
+
+	// Constructors
+
+	public Set<Kh> getKhs() {
+		return khs;
+	}
+
+	public void setKhs(Set<Kh> khs) {
+		this.khs = khs;
+	}
+
+	/** default constructor */
+	public Users() {
+	}
+
+	/** minimal constructor */
+	public Users(Role role, String logincode, String password, String username,
+			Integer state) {
+		this.role = role;
+		this.logincode = logincode;
+		this.password = password;
+		this.username = username;
+		this.state = state;
+	}
+
+	/** full constructor */
+	public Users(Role role, String logincode, String password, String username,
+			Integer state, String bz) {
+		this.role = role;
+		this.logincode = logincode;
+		this.password = password;
+		this.username = username;
+		this.state = state;
+		this.bz = bz;
+	}
+
+	// Property accessors
+
+	public Integer getUserid() {
+		return this.userid;
+	}
+
+	public void setUserid(Integer userid) {
+		this.userid = userid;
+	}
+
+	public Role getRole() {
+		return this.role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
+	public String getLogincode() {
+		return this.logincode;
+	}
+
+	public void setLogincode(String logincode) {
+		this.logincode = logincode;
+	}
+
+	public String getPassword() {
+		return this.password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getUsername() {
+		return this.username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public Integer getState() {
+		return this.state;
+	}
+
+	public void setState(Integer state) {
+		this.state = state;
+	}
+
+	public String getBz() {
+		return this.bz;
+	}
+
+	public void setBz(String bz) {
+		this.bz = bz;
+	}
+
+	public String getTel() {
+		return tel;
+	}
+
+	public void setTel(String tel) {
+		this.tel = tel;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getArea_code() {
+		return area_code;
+	}
+
+	public void setArea_code(String area_code) {
+		this.area_code = area_code;
+	}
+
+	public String getArea_name() {
+		return area_name;
+	}
+
+	public void setArea_name(String area_name) {
+		this.area_name = area_name;
+	}
+
+	public String getLast_login() {
+		return last_login;
+	}
+
+	public void setLast_login(String last_login) {
+		this.last_login = last_login;
+	}
+
+	public String getHistory_operation() {
+		return history_operation;
+	}
+
+	public void setHistory_operation(String history_operation) {
+		this.history_operation = history_operation;
+	}
+
+	public String getWechat() {
+		return wechat;
+	}
+
+	public void setWechat(String wechat) {
+		this.wechat = wechat;
+	}
+	
+	
+
+}

@@ -1,0 +1,18 @@
+package com.service;
+
+import com.pojo.Spxx;
+import com.pojo.SpxxImage;
+
+public interface SpxxImageBiz {
+	public void save(SpxxImage dto);
+	
+	/**
+	 * 修改改商品
+	 */
+	public void updateSpxx(SpxxImage dto);
+	
+	/**
+	 * 删除商品
+	 */
+	public boolean deleteSpxx(Integer id);
+}

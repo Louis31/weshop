@@ -1,0 +1,357 @@
+/*!
+ * 进货入库
+ */
+function deleteCommont(id){
+		Ext.MessageBox.confirm('提示', '是否删除评论', function(c) {
+			   if(c=='yes'){
+			   		Ext.Ajax.request({
+			   			url : ctx+"/comment/deleteComment.do",
+			   			params:{id:id},
+			   			success : function(o) {
+			   			    var dataObj=eval("("+o.responseText+")");
+			   				if(dataObj.success){
+			   					Ext.Msg.alert("信息提示","操作成功");
+			   				    store.reload();
+			   				}else{
+			   				    Ext.Msg.alert("信息提示","该类别商品不能临时停止");
+			   				}
+			   			}
+			   		});
+			    }
+			});
+	}
+function topCommont(id){
+	Ext.MessageBox.confirm('提示', '是否置顶评论', function(c) {
+		   if(c=='yes'){
+		   		Ext.Ajax.request({
+		   			url : ctx+"/comment/topComment.do",
+		   			params:{commendId:id},
+		   			success : function(o) {
+		   			    var dataObj=eval("("+o.responseText+")");
+		   				if(dataObj.success){
+		   					Ext.Msg.alert("信息提示","操作成功");
+		   				    store.reload();
+		   				}else{
+		   				    
+		   				}
+		   			}
+		   		});
+		    }
+		});
+}
+var store;
+Ext.onReady(function(){
+	
+	Ext.QuickTips.init();
+	var commontObj = [
+        { name:'id', type:'int'},
+		{ name:'spid', type:'string'},
+		{ name:'spname', type:'string'},
+		{ name:'stars', type:'string'},
+		{ name:'reviewer', type:'string'},
+		{ name:'revTime', type:'date'},
+		{ name:'content', type:'string'},
+		{ name:'top', type:'string'},
+		{ name:'revcon', type:'string'}
+	];
+	var v_spid="0", v_spname="",v_start="1",v_limit="10";
+	//商品数据
+  store = new Ext.data.JsonStore({
+	    url: ctx+'/comment/getCommentByLang.do',
+	    root: 'root',
+	    totalProperty: 'total',
+	    fields: commontObj,
+	    listeners:{beforeload:function(a){a.baseParams={start:v_start, limit:v_limit,star:"3"};}}
+	});
+	
+	//评论列表
+    var grid = new Ext.grid.GridPanel({
+    	id:'grid',
+        store: store,
+        cm: new Ext.grid.ColumnModel({
+			defaults: {	menuDisabled : true},//禁止表头菜单
+			columns:[
+			     new Ext.grid.RowNumberer(),
+				{header: '商品编号', width: 100, sortable:true, dataIndex: 'spid'},
+	            {header: '商品名称', width: 200, sortable:true, dataIndex: 'spname'},
+	            {header: '评价星级', width: 150, sortable:true, dataIndex: 'stars',renderer:function(value){
+	            	
+	               switch(value){
+	                case "1":
+	                	return "★";
+	            	   break;
+	                case "2":
+	                	return "★★";
+	            	   break;
+	                case "3":
+	                	return "★★★";
+	            	   break;
+	                case "4":
+	                	return "★★★★";
+	            	   break;
+	                case "5":
+	                	return "★★★★★";
+	                default:
+	                	return "暂无评分";
+	            	   break;
+	               }
+	            }},
+	            {header: '发布者', width: 100, sortable:true, dataIndex: 'string'},
+	            {header: '发布时间', width: 100, sortable:true, align:'right', renderer:zhMoney, dataIndex: 'revTime'},
+	            {header: '浏览评价', width: 100, sortable:true, align:'center', dataIndex: 'content'},
+	            {header: '管理', width: 100, sortable:true, align:'center', dataIndex: 'id',renderer:function(value){
+	            	return "<a onclick='topCommont("+value+")'>置顶</a>";
+	            }},
+	            {header: '管理', width: 100, sortable:true, align:'center', dataIndex: 'id',renderer:function(value){
+	            	return "<a onclick='deleteCommont("+value+")'>删除</a>";
+	            }}
+	            ]
+        }),
+        stripeRows: true, 	//行分隔符
+        columnLines : true, //列分隔符
+        margins:'20',
+        style:'border:1px solid',
+		region:'center',
+        iconCls:'',
+        
+        tbar:[{
+        	text:'★好差',
+        	iconCls:'',
+        	handler: function(){
+        		store.reload({params:{star:"1"}});
+        	}
+        },'-',{
+        	text:'★★差',
+        	iconCls:'',
+        	handler: function(){
+        		store.reload({params:{star:"2"}});
+        	}
+        },'-',{
+        	text:'★★★良好',
+        	iconCls:'',
+        	handler: function(){
+        		store.reload({params:{star:"3"}});
+        	}
+        },'-',{
+        	text:'★★★★好',
+        	iconCls:'',
+        	handler: function(){
+        		store.reload({params:{star:"4"}});
+        	}
+        }
+        ,'-',{
+        	text:'★★★★★非常好',
+        	iconCls:'',
+        	handler: function(){
+        		store.reload({params:{star:"5"}});
+        	}
+        }
+        ],
+    bbar: new Ext.PagingToolbar({
+        pageSize: 15,
+        store: store,
+        displayInfo: true
+    })
+        ,
+        listeners:{
+             	render:function(){
+             		var tbar = new Ext.Toolbar ({
+             			items:[
+             			    {
+             	        	text:'设为置顶',
+             	        	iconCls:'btn-edit',
+             	        	handler: function(){
+             	        		var record= grid.getSelectionModel().getSelected();
+             	        		if(record.get("top")=="0"){
+             	        			var id=record.get("id");
+             	        			Ext.MessageBox.confirm('提示', '是否置顶评论', function(c) {
+             	        			   if(c=='yes'){
+             	        			   		Ext.Ajax.request({
+             	        			   			url : ctx+"/comment/topComment.do",
+             	        			   			params:{commendId:id},
+             	        			   			success : function(o) {
+             	        			   			    var dataObj=eval("("+o.responseText+")");
+             	        			   				if(dataObj.success){
+             	        			   					Ext.Msg.alert("信息提示","操作成功");
+             	        			   				    store.reload();
+             	        			   				}else{
+             	        			   				    
+             	        			   				}
+             	        			   			}
+             	        			   		});
+             	        			    }
+             	        			});
+             	        		}else if(record.get("top")=="1"){
+             	        			alert("已经置顶");
+             	        		}
+             	        	}
+             	           },{
+                	        	text:'删除所选',
+                 	        	iconCls:'btn-edit',
+                 	        	handler: function(){
+                 	        		var record= grid.getSelectionModel().getSelected(); 
+                 	        	}
+                 	           }
+             			]
+             		});
+             tbar.render(grid.tbar);
+            },
+             
+        	rowdblclick:function(){
+        		var record= grid.getSelectionModel().getSelected(); 
+				if(record){
+	        		
+				}
+        	}
+        }
+    });
+    
+	
+	
+    //  add
+    //商品表单
+    var addForm = new Ext.FormPanel({
+    	id:'addCMForm',
+		layout : 'form',
+		frame:true,
+		labelWidth:60,
+		border : false,
+		padding : '15 10 0 8',
+		defaults : {
+			anchor : '100%'
+		},
+		items:[
+		       {id:'lbtext',
+				   width : 145,
+				   xtype : 'textfield',
+				    name:'spname',
+					fieldLabel:'商品',
+					allowBlank : false,
+					maxLength :50,
+					enableKeyEvents:true,
+					listeners:{
+								focus:function(){
+									bsspWindow.show();
+								},
+								blur:function(){
+									addForm.getForm().clearInvalid();
+								}
+							}
+					},{
+						xtype:'combo',
+						hiddenName:'stars',
+						fieldLabel:'星级',
+						mode: 'local',
+						triggerAction: 'all',
+						valueField :'value',
+						displayField: 'text',
+						allowBlank : false,
+						editable : false,
+						anchor:"45%",
+						value:'1',
+						store : new Ext.data.SimpleStore({
+						    fields: ['value', 'text'],
+						    data : [['1','一星'],['2','二星'],['3','三星'],['4','四星'],['5','五星']]
+						})
+					},{
+						xtype:'combo',
+						hiddenName:'top',
+						fieldLabel:'星级',
+						mode: 'local',
+						triggerAction: 'all',
+						valueField :'value',
+						displayField: 'text',
+						allowBlank : false,
+						editable : false,
+						anchor:"45%",
+						value:'1',
+						store : new Ext.data.SimpleStore({
+						    fields: ['value', 'text'],
+						    data : [['1','是'],['0','否']]
+						})
+					},{
+						xtype: "StarHtmleditor",
+			            height: 250,
+			            name:"content",
+			            fieldLabel: '图文详情'
+					},{
+						xtype : 'hidden',
+						name : 'spid'
+					}
+		      ]
+	});
+    
+  //增加商品窗口
+    var addWindow = new Ext.Window({
+		title : '增加评论',
+		width:"80%",
+		height:400,
+		closeAction:'hide',
+		modal : true,
+		border:false,
+		resizable : false,
+		layout : 'fit',
+		buttonAlign : 'center',
+		items : [addForm],
+		buttons : [{
+			text : '保存',
+			handler : function() {
+				submitSpxx(false);
+			}
+		}, {
+			text : '取消',
+			handler : function() {
+				addWindow.hide();
+			}
+		}]
+	});
+    // add
+  
+    var submitSpxx = function(next){
+		if (addForm.getForm().isValid()) {
+			addForm.getForm().submit({
+				url : ctx+'/comment/saveComment.do',
+				success : function(form, action) {
+				    if(next){
+				    	addForm.getForm().reset();
+				    }else{
+						Ext.Msg.alert('信息提示',action.result.message);
+						addWindow.hide();
+						 store.reload();
+				    }
+				},
+				failure : function(form, action) {
+					if(action.result.errors){
+						Ext.Msg.alert('信息提示',action.result.errors);
+					}else{
+						Ext.Msg.alert('信息提示','连接失败');
+					}
+				},
+				waitTitle : '提交',
+				waitMsg : '正在保存数据，稍后...'
+			});
+		}
+	}
+   
+          
+	//布局
+    new Ext.Viewport({
+		layout:'fit',
+		items:[{
+			frame:true,
+			title:'',
+			iconCls:'menu-11',
+			layout:'border',
+			items:[grid]
+		}],
+		listeners:{
+			render:function(){
+				store.load();
+			}
+		}
+	});
+	
+ 
+	
+
+});

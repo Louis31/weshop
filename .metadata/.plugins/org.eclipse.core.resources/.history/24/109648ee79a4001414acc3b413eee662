@@ -1,0 +1,105 @@
+package com.service.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.cxstock.dao.DqkcDAO;
+import com.cxstock.utils.pubutil.TreeNode;
+import com.entities.InformationTree;
+import com.service.InformationTreeBiz;
+
+@SuppressWarnings("unchecked")
+@Service
+@Transactional
+public class InformationTreeBizImpl implements InformationTreeBiz{
+
+	@Resource
+	private DqkcDAO dqkcDao;
+
+	@Override
+	public long save(InformationTree dto) {
+		// TODO Auto-generated method stub
+		dqkcDao.save(dto);
+		return dto.getId();
+	}
+
+	@Override
+	public boolean delete(long id) {
+		// TODO Auto-generated method stub
+		int count = dqkcDao.countQuery(" from Information where treeId = "+id);
+		if(count>0){
+			return false;
+		}
+		dqkcDao.deleteById(InformationTree.class, id);
+		return true;
+	}
+
+	@Override
+	public List getInformationTree() {
+		// TODO Auto-generated method stub
+		List list =  dqkcDao.listAll("InformationTree");
+		return this.getTree(0, list);
+	}
+
+	@Override
+	public void update(InformationTree dto) {
+		// TODO Auto-generated method stub
+		dqkcDao.saveOrUpdate(dto);
+	}
+	
+	
+	/**  
+	 * 通过递归生成tree结构  
+	 * @param List childrenlist 商品类别集合
+	 * @param Integer id 节点（父节点id）
+	 */
+	private List getTree(long id,List childrenlist) {
+		List resultlist = new ArrayList();
+
+		//当前级菜单集合
+		List list = this.getChildrens(childrenlist, id);
+		for (Object obj : list) {
+			InformationTree infor = (InformationTree) obj;
+
+			TreeNode treeNode = new TreeNode();
+			treeNode.setId(infor.getId()+"");
+			treeNode.setText(infor.getInfoname());
+			treeNode.setIconCls("menu-folder");
+			//子菜单
+			List children = this.getChildrens(childrenlist, infor.getId());
+			if (children.size() > 0) {//有子类别集合
+				treeNode.setLeaf(false);
+				treeNode.setChildren(getTree(infor.getId(),childrenlist)); //递归调   
+			} else {//该节点为叶子    
+				treeNode.setLeaf(true);
+			}
+			resultlist.add(treeNode);
+		}
+		return resultlist;
+	}
+
+	/**
+	 * 从funcs集合中找出父节点id为pid的类别集合
+	 * @param List menus 类别集合
+	 * @param Integer pid 父节点id
+	 * return List
+	 */
+	private List getChildrens(List splbs, long pid) {
+		List resultList = new ArrayList();
+		InformationTree infor = null;
+		for (Object obj : splbs) {
+			infor = (InformationTree) obj;
+			if (infor.getPid()==pid) {//父节点id
+				resultList.add(infor);
+			}
+		}
+		return resultList;
+	}
+
+
+}

@@ -1,0 +1,97 @@
+package com.service.impl;
+
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.apache.commons.lang.StringUtils;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.cxstock.dao.DqkcDAO;
+import com.cxstock.utils.pubutil.Page;
+import com.entities.Comment;
+import com.service.CommentBiz;
+
+@SuppressWarnings("unchecked")
+@Service
+@Transactional
+public class CommentBizImpl implements CommentBiz{
+
+	@Resource
+	private DqkcDAO dqkcDao;
+	
+	@Override
+	public void saveComment(Comment comment) {
+		// TODO Auto-generated method stub
+		dqkcDao.save(comment);
+	}
+
+	@Override
+	public int getCommentNumByStar(String starbegin,String starend) {
+		// TODO Auto-generated method stub
+		String hql = "from Comment c where c.stars<="+starend+" and c.stars>="+starbegin;
+		int sum = dqkcDao.countQuery(hql);
+		return sum;
+	}
+
+	@Override
+	public List<Comment> getCommentByStar(String starbegin,String starend, int page, int pageSize) {
+		// TODO Auto-generated method stub
+		String hql = "from Comment c where c.stars<="+starend+" and c.stars>="+starbegin;
+		int index = (page-1)*pageSize;
+		int end = page*pageSize;
+		List<Comment> list = dqkcDao.findByHql(hql,index,end);
+		return list;
+	}
+	
+	@Override
+	public List<Comment> getComment(int page, int pageSize) {
+		// TODO Auto-generated method stub
+		String hql = "from Comment c ";
+		int index = (page-1)*pageSize;
+		int end = page*pageSize;
+		List<Comment> list = dqkcDao.findByHql(hql,index,end);
+		return list;
+	}
+
+	@Override
+	public void revComment(String commendId, String revcon) {
+		// TODO Auto-generated method stub
+		String hql = "update Comment c set c.revcon= "+revcon+" where c.id="+commendId;
+		dqkcDao.update(hql);
+	}
+
+	@Override
+	public void updateComment(Comment Comment) {
+		// TODO Auto-generated method stub
+		dqkcDao.saveOrUpdate(Comment);
+	}
+
+	@Override
+	public void topComment(String commendId) {
+		// TODO Auto-generated method stub
+		String hql = "update Comment c set c.top=1 where c.id="+commendId;
+		dqkcDao.update(hql);
+	}
+
+	@Override
+	public Page getCommentByStar(String star, Page page) {
+		String hql = "from Comment c where 1=1";
+		if(StringUtils.isEmpty(star)){
+		 hql = "from Comment c";
+		}
+		
+		List list = dqkcDao.findByHql(hql, page.getStart(), page.getLimit());
+		int total = dqkcDao.countQuery("select count(*) "+hql.toString());
+		page.setRoot(list);
+		page.setTotal(total);
+		return page;
+	}
+
+	@Override
+	public void deleteComment(Long id) {
+		dqkcDao.deleteById(Comment.class, id);
+	}
+
+}

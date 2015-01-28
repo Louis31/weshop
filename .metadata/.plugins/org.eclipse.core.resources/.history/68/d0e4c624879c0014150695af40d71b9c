@@ -1,0 +1,109 @@
+Ext.ns('Ext.ux.form');
+
+Ext.ux.form.Ueditor = Ext.extend(Ext.form.FieldContainer, {
+    initComponent : function(){
+        Ext.ux.form.Ueditor.superclass.initComponent.call(this);
+        var me = this;
+        me.addEvents('initialize', 'change'); // 为ueditor添加一个初始化完成的事件
+        var id = me.id + '-ueditor';
+        me.html = '<script id="' + id + '" type="text/plain" name="' + me.name + '"></script>';
+        me.callParent(arguments);
+        me.initField();
+        me.on('render', function () {
+            var width = me.width - 105;
+            var height = me.height - 109;
+            var config = {initialFrameWidth: width, initialFrameHeight: height};
+            me.ueditorInstance = UE.getEditor(id, config);
+            me.ueditorInstance.ready(function () {
+                me.initialized = true;
+                me.fireEvent('initialize', me);
+                me.ueditorInstance.addListener('contentChange', function () {
+                    me.fireEvent('change', me);
+                });
+            });
+        });
+    },
+
+    validationEvent:false,
+    validateOnBlur:false,
+    trigger1Class:'x-form-clear-trigger',
+    trigger2Class:'x-form-search-trigger',
+    hideTrigger1:true,
+    width:180,
+    hasSearch : false,
+    paramName : 'search',
+
+    onTrigger1Click : function(){
+        if(this.hasSearch){
+            this.el.dom.value = '';
+            this.store.reload({params:{search:null}});
+            this.triggers[0].hide();
+            this.hasSearch = false;
+        }
+    },
+
+    onTrigger2Click : function(){
+        var v = this.getRawValue();
+        if(v.length < 1){
+            this.onTrigger1Click();
+            return;
+        }
+        this.store.reload({params:{search:v}});
+        this.hasSearch = true;
+        this.triggers[0].show();
+    }
+});
+//Ext.ns('Ext.ux.form');
+//Ext.define('Ext.ux.UEditor', {
+//    extend: Ext.form.FieldContainer,
+//    mixins: {
+//        field: Ext.form.field.Field
+//    },
+//    alias: 'widget.ueditor',
+//    alternateClassName: 'Ext.form.UEditor',
+//    ueditorInstance: null,
+//    initialized: false,
+//    initComponent: function () {
+        var me = this;
+        me.addEvents('initialize', 'change'); // 为ueditor添加一个初始化完成的事件
+        var id = me.id + '-ueditor';
+        me.html = '<script id="' + id + '" type="text/plain" name="' + me.name + '"></script>';
+        me.callParent(arguments);
+        me.initField();
+        me.on('render', function () {
+            var width = me.width - 105;
+            var height = me.height - 109;
+            var config = {initialFrameWidth: width, initialFrameHeight: height};
+            me.ueditorInstance = UE.getEditor(id, config);
+            me.ueditorInstance.ready(function () {
+                me.initialized = true;
+                me.fireEvent('initialize', me);
+                me.ueditorInstance.addListener('contentChange', function () {
+                    me.fireEvent('change', me);
+                });
+            });
+        });
+//    },
+//    getValue: function () {
+//        var me = this,
+//            value = '';
+//        if (me.initialized) {
+//            value = me.ueditorInstance.getContent();
+//        }
+//        me.value = value;
+//        return value;
+//    },
+//    setValue: function (value) {
+//        var me = this;
+//        if (value === null || value === undefined) {
+//            value = '';
+//        }
+//        if (me.initialized) {
+//            me.ueditorInstance.setContent(value);
+//        }
+//        return me;
+//    },
+//    onDestroy: function () {
+//        this.ueditorInstance.destroy();
+//    }
+//});

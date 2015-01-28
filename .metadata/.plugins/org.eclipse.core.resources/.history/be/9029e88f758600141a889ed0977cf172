@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<%@include file="../../common/import-tags.jsp"%>
+<%@include file="../../common/import-static.jsp"%>
+<link href="${ctx}/static/css/style.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="${ctx}/static/js/ImageMove.js"></script>
+<script type="text/javascript">
+var ImageMove = new ImageMove();
+var openId="${openid}";
+if(openId!=null&&openId!=""){
+	$.cookies.set('openId', openId); 
+}else{
+	openId = $.cookies.get('openId');
+}
+var path = "";
+function save(){
+	$("#menuForm").ajaxSubmit({
+        url:'${ctx}/giftbox/getBox?openId='+openId+"&boxName="+ImageMove.getCurrentIndex(),
+        datatype:'json',
+        success: function(data){
+        	if(data.success){
+               alert("领取成功");
+               alert(data.uid);
+        	   path = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa125df0217c39917&redirect_uri=http://59.188.248.183:8088/WeChatShare/giftbox/openpage/"+data.uid+"&response_type=code&scope=snsapi_base&state=1#wechat_redirect";
+        	   _WXShare("",100,100,"快来给我拆盒子吧","rqwe",path);
+        	}else 
+ 	    	   alert('保存失败');
+        },  
+        error: function(XmlHttpRequest, textStatus, errorThrown){  
+            alert( "error");  
+        }
+    }); 
+}
+//当微信内置浏览器初始化后会触发WeixinJSBridgeReady事件。
+document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+        // 发送给好友
+        WeixinJSBridge.on('menu:share:appmessage', function(argv){
+        	alert("13");
+        	  WeixinJSBridge.invoke('sendAppMessage',{
+                  'img_url': "",
+                  'img_width': 100,
+                  'img_height': 100,
+                  'link': path,
+                  'desc': "111111",
+                  'title': "----------"
+                  }, function(res){
+                    _report('send_msg', res.err_msg);
+              })
+      });
+}, false);
+</script>
+</head>
+
+<body>
+<div class="container">
+    <div class="content logo">
+      <h2></h2>
+        <div class="title"></div>
+        <div class="gift_box">
+            <ul class="show_gift">
+                <li class="arrow_l"><a href="#" onclick="ImageMove.change(-1);"></a></li>
+                <li class="gift">
+				<a href="#">
+				<div style="width:551px;height:450px;overflow: hidden;position: relative;margin: 30px auto 0 auto;">
+				<img id="box1" src="${ctx}/static/images/gift1.png" style="left:0;"    class="diapo" width="551" height="450" />
+				<img id="box2" src="${ctx}/static/images/gift2.png" style="left:551;"  class="diapo" width="551" height="450" />
+				<img id="box3" src="${ctx}/static/images/gift3.png" style="left:1102;"  class="diapo" width="551" height="450" />
+				</div>
+				</a></li>
+				
+                <li class="arrow_r"><a href="#" onclick="ImageMove.change(1);"></a></li>
+            </ul>
+            <div class="clear"></div>
+            <div class="intro t1">
+            <img id="titel_1" style="display:block;" src="${ctx}/static/images/t1-1.png" />
+            <img id="titel_2" style="display:none;" src="${ctx}/static/images/t1-2.png" />
+            <img id="titel_3" style="display:none;" src="${ctx}/static/images/t1-3.png" />
+            </div>
+        </div>
+        <div class="clear"></div>
+        <div class="btn">
+        <form id="menuForm"  method="post" >
+        <a href="#" onclick="save();">领取盒子</a>
+        </form>
+        </div>
+  </div>
+</div>
+</body>
+</html>

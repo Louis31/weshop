@@ -1,0 +1,243 @@
+package com.i5le.redplus.web;
+
+import java.util.Date;
+import java.util.List;
+
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.i5le.framwork.core.entity.AjaxResult;
+import com.i5le.framwork.core.service.BaseService;
+import com.i5le.framwork.core.web.BaseCRUDController;
+import com.i5le.framwork.sys.entity.User;
+import com.i5le.redplus.entity.AreaCode;
+import com.i5le.redplus.entity.GiftInfo;
+import com.i5le.redplus.entity.RedplusMoney;
+import com.i5le.redplus.entity.TheMessage;
+import com.i5le.redplus.entity.UserInfo;
+import com.i5le.redplus.entity.UserMoney;
+import com.i5le.redplus.entity.UserTrans;
+import com.i5le.redplus.entity.UserTransInfo;
+import com.i5le.redplus.service.AreaCodeService;
+import com.i5le.redplus.service.GiftInfoService;
+import com.i5le.redplus.service.RedplusMoneyService;
+import com.i5le.redplus.service.TheMessageService;
+import com.i5le.redplus.service.UserInfoService;
+import com.i5le.redplus.service.UserMoneyService;
+import com.i5le.redplus.service.UserTransInfoService;
+import com.i5le.redplus.service.UserTransService;
+import com.redplus.view.utils.GsonUtil;
+
+@Controller
+@RequestMapping(value = "/userTrans")
+public class UserTransController extends BaseCRUDController<UserTrans, Long> {
+
+	@Autowired
+	private RedplusMoneyService redplusMoneyService;
+	@Autowired
+	private UserTransService userTransService;
+
+	@Autowired
+	private UserTransInfoService userTransInfoService;
+
+	@Autowired
+	private UserMoneyService userMoneyService;
+
+	@Autowired
+	private TheMessageService theMessageService;
+
+	@RequestMapping(value = "")
+	@ResponseBody
+	public String index() {
+		return PARAMS_ERROR;
+	}
+
+	@RequestMapping(value = "list")
+	@ResponseBody
+	public String list(HttpServletRequest request) {
+		return super.listIter(request);
+	}
+	
+
+	@RequestMapping(value = "one")
+	@ResponseBody
+	public String findByOne(@RequestParam("oid") Long oid) {
+		AjaxResult<UserTrans> ajaxResult = new AjaxResult<UserTrans>();
+		ajaxResult.setSuccess(true);
+		ajaxResult.setObj(this.userTransService.findOne(oid));
+
+		return GsonUtil.transferByEntity(ajaxResult);
+
+	}
+
+	@RequestMapping(value = "fromUserTrans")
+	@ResponseBody
+	public String fromUserTrans(@RequestParam("fid") Long fid) {
+		AjaxResult<UserTrans> ajaxResult = new AjaxResult<UserTrans>();
+		ajaxResult.setSuccess(true);
+		ajaxResult.setList(this.userTransService.findByFromUserId(fid));
+
+		return GsonUtil.transferByEntity(ajaxResult);
+
+	}
+
+	@RequestMapping(value = "toUserTrans")
+	@ResponseBody
+	public String toUserTrans(@RequestParam("tid") Long tid) {
+		AjaxResult<UserTrans> ajaxResult = new AjaxResult<UserTrans>();
+		ajaxResult.setSuccess(true);
+		ajaxResult.setList(this.userTransService.findByToUserId(tid));
+
+		return GsonUtil.transferByEntity(ajaxResult);
+
+	}
+
+	// @RequestMapping(value = "updateTrans")
+	// @ResponseBody
+	// public String toUserTrans(@RequestParam("tid") Long tid ,@RequestMapp) {
+	// AjaxResult<UserTrans> ajaxResult = new AjaxResult<UserTrans>();
+	// ajaxResult.setSuccess(true);
+	// ajaxResult.setList(this.userTransService.findByToUserId(tid));
+	//
+	// return GsonUtil.transferByEntity(ajaxResult);
+	//
+	// }
+
+	// @ResponseBody
+	// @RequestMapping(value = "actionTrans")
+	// public String actionTrans(@RequestParam("id") Long tid,
+	// @RequestParam("statu") int statu) {
+	//
+	// UserTrans trans = this.userTransService.findOne(tid);
+	// UserMoney fmoney = this.userMoneyService.findByUserId(
+	// trans.getFromUser().getId());
+	// UserMoney tmoney = this.userMoneyService.findByUserId(
+	// trans.getToUser().getId());
+	//
+	// return null;
+	// }
+	@ResponseBody
+	@RequestMapping(value = "add")
+	public String add(UserTrans trans) {
+
+		return userTransService.addnew(trans) ? RESULT_OK : RESULT_ERROR;
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "actionTrans")
+	public String actionTrans(@RequestParam("tid") Long id,
+			@RequestParam("statu") int statu) {
+		AjaxResult<UserTrans> ajaxResult = new AjaxResult<UserTrans>();
+		UserTrans userTrans = userTransService.findOne(id);
+		if(userTrans == null){
+			ajaxResult.setSuccess(false);
+			
+			return GsonUtil.transferByEntity(ajaxResult);
+		}
+		UserInfo fromUser = userTrans.getFromUser();
+		UserInfo toUser = userTrans.getToUser();
+
+		Long money = userTrans.getCountMoney();
+		UserMoney formuserMoney = userMoneyService.findByUserId(userTrans
+				.getFromUser().getId());
+		ajaxResult.setSuccess(true);
+		TheMessage theMessage = new TheMessage();
+		TheMessage theMessage888 = new TheMessage();
+		theMessage.setCreatetime(new Date());
+		theMessage.setFromUser(fromUser);
+		theMessage.setToUser(toUser);
+		theMessage.setTransId(id);
+		
+		UserMoney toUserMoney = userMoneyService.findByUserId(userTrans
+				.getToUser().getId());
+		if(toUserMoney==null){
+			toUserMoney = new UserMoney();
+			toUserMoney.setUserId(userTrans
+				.getToUser().getId());
+			toUserMoney.setMoney(0L);
+			toUserMoney.setGold(0L);
+			userMoneyService.save(toUserMoney);
+		}
+		if (statu == UserTrans.TRANS_OK) {
+			if (formuserMoney.getMoney() < money) {
+				ajaxResult.setSuccess(false);
+				userTrans.setStatu(UserTrans.TRANS_BAD);
+				theMessage.setInfo("余额不足不够送礼:" + money);
+				this.userTransService.save(userTrans);
+			} else {
+				formuserMoney.setMoney(formuserMoney.getMoney() - money);
+				userTrans.setStatu(UserTrans.TRANS_OK);
+				this.userMoneyService.save(formuserMoney);
+				this.userTransService.save(userTrans);
+				theMessage.setInfo("此次送礼已经确认:" + money);
+			
+			}
+
+		} else if (statu == UserTrans.TRANS_OVER) {
+			userTrans.setStatu(UserTrans.TRANS_OVER);
+			toUserMoney.setMoney(toUserMoney.getMoney() != null ? toUserMoney
+					.getMoney() + money : money);
+			ajaxResult.setSuccess(true);
+			theMessage.setInfo("此次送礼已经完美结束，总共金额:" + money);
+			this.userTransService.save(userTrans);
+			this.userMoneyService.save(toUserMoney);
+		
+
+		} else if (statu == UserTrans.TRANS_BAD) {
+			userTrans.setStatu(UserTrans.TRANS_BAD);
+			theMessage.setInfo("拒绝此次送礼");
+			this.userTransService.save(userTrans);
+		}
+		BeanUtils.copyProperties(theMessage, theMessage888);
+		UserInfo user888 = new UserInfo();
+		user888.setId(66l);
+		theMessage888.setToUser(user888);
+		this.theMessageService.save(theMessage);
+		this.theMessageService.save(theMessage888);
+		return GsonUtil.transferByEntity(ajaxResult);
+
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "addT")
+	public String addT(@Valid UserTrans trans) {
+
+		return userTransService.add(trans) ? RESULT_OK : RESULT_ERROR;
+	}
+
+	// @RequestMapping(value = "add")
+	// @ResponseBody
+	// // public String add(@RequestParam("formId") Long
+	// foomId,@RequestParam("toId") Long toId,@RequestParam("ids") String ids) {
+	// //
+	// //
+	// //
+	// // }
+
+	@ModelAttribute
+	public void getEntity(
+			@RequestParam(value = "id", defaultValue = "-1") Long id,
+			Model model) {
+		if (id != -1) {
+			model.addAttribute("entity", this.userTransService.findOne(id));
+		}
+	}
+
+	@Override
+	protected BaseService<UserTrans, Long> getServcie() {
+		return this.userTransService;
+	}
+
+}

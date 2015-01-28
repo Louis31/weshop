@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,target-densitydpi=high-dpi,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+	<meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" >
+    <meta name="format-detection" content="telephone=no">
+<title>登陆</title>
+<script src="js/jquery-2.1.1.min.js"></script>
+<link rel="stylesheet" type="text/css" href="css/index.css">
+<link rel="stylesheet" type="text/css" href="css/login.css">
+<script>
+$(function(){
+	$("#roll_cart").css({"height":($(document.body).width()*0.752)});
+	$("#roll_cart li").css({"width":$(document.body).width(),"height":$("#roll_cart").height()});
+	//alert($("#roll_cart li").width());
+	$("#shuffling").css("height",$("#roll_cart").height());
+	$("#rollcar").css({"height":$("#roll_cart").height()});
+	
+	var current = 0;
+	function f(){
+		if(++current >4){
+			current = 0;
+		} 
+		$(".current").removeClass("current");
+		$(".tag li").eq(current).addClass("current");
+		$("#roll_cart").animate({left:-$("#roll_cart li").width()},1000,'linear',function(){
+			//alert($("#roll_cart")[0].scrollLeft);
+			if( $("#roll_cart")[0].scrollLeft >= 0 ){
+				$("#roll_cart li:first").insertAfter($("#roll_cart li:last"));
+				$("#roll_cart").css({left:0});
+			}
+			
+		});
+	}
+	
+	var start = setInterval(f,4000);
+	
+	$("#roll_cart").onmouseover=function() {
+		clearInterval(start);
+	};
+	$("#roll_cart").onmouseout=function() {
+		start=setInterval(f,4000);
+	};
+	
+	$("#c_spage").click(function(){
+		$("#c_showpages").toggle();
+	});
+});
+</script>
+</head>
+
+<body>
+<div class="main">
+	<div class="head">
+    	<div class="backdiv">
+        	<a href="javascript:history.back(-1)" onClick="javascript:history.back(-1);"><img src="images/det_order_06.png" /></a>
+        </div>
+        
+        <div class="c_title">
+        	登陆
+        </div>
+    </div>
+    <div class="login_logo">
+    	<img src="images/login_03.png" />
+    </div>
+    <!--登陆输入框开始-->
+    <div class="login_input">
+    	<div class="login_name">
+    		<div class="login_name_border">
+	    		<img src="images/login_07.png" />
+	    		<input class="name_input"  type="text" placeholder="账号/手机号"value=""/>
+    		</div>
+    	</div>
+    	<div class="login_password">
+    		<div class="login_password_border">
+	    		<img src="images/login_10.png" />
+	    		<input class="password_input" type="password" placeholder="账号/手机号" value=""/>
+	    	</div>
+    	</div>
+    </div>
+    <!--登陆输入框结束-->
+    <!--登陆底部开始-->
+    <div class="login_botton_0">
+	    <div class="login_botton">
+	    	<span>登陆</span>
+	    </div>
+	    <div class="login_botton_span">
+	    	<span>注册账号 ｜ 忘记密码</span>
+	    </div>
+    </div>
+    <!--登陆底部结束-->
+    <!-- 底部 -->
+    <div class="layer_bottom">
+    	<div class="l20"><img src="images/home.png" /></div>
+        <div class="l20"><img src="images/sort.png" /></div>
+        <div class="l20"><img src="images/cart.png" /></div>
+        <div class="l20"><img src="images/find.png" /></div>
+        <div class="l20"><img src="images/mymanage.png" /></div>
+    </div>
+    <!-- 底部	END-->
+</div>
+</body>
+</html>

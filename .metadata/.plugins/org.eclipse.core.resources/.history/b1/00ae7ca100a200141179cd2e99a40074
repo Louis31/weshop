@@ -1,0 +1,210 @@
+package com.controller.struts2.jh;
+
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JsonConfig;
+import net.sf.json.util.PropertyFilter;
+
+import com.controller.EntityData;
+import com.controller.JHJsonEntity;
+import com.controller.struts2.BaseController;
+import com.pojo.Jhd;
+import com.pojo.Jhdsp;
+import com.pojo.Thd;
+import com.service.JhService;
+import com.sun.istack.internal.FinalArrayList;
+
+@SuppressWarnings("serial")
+@Controller
+@RequestMapping("/jh")
+public class JhController extends BaseController  {
+	
+	@Autowired
+	private JhService jhBiz;
+	
+	
+	/**
+	 * 生成单据编号
+	 */
+	@RequestMapping(value="/getDjCode")
+	@ResponseBody
+	public String getDjCode(String tab,String ymd){
+		try {
+			String code = jhBiz.getDjCode(tab,ymd);
+			return code;
+		} catch (Exception e) {
+			e.printStackTrace();		
+		}
+		return this.outError();
+	}
+	
+	/**
+	 * 保存/修改进货单
+	 */
+	@RequestMapping(value="/saveOrUpdateJhd",method=RequestMethod.POST)
+	@ResponseBody
+	public String saveOrUpdateJhd(JHJsonEntity entity) {
+			Jhd pojo = new Jhd();
+			pojo.setDjid(entity.getDjid());
+			pojo.setGysid(entity.getGysid());
+			pojo.setGysname(entity.getGysname());
+			pojo.setSfje(entity.getSfje());
+			pojo.setJystate(entity.getJystate());
+			pojo.setRiqi(entity.getRiqi());
+			//pojo.setUserid(this.getUserDTO().getUserid());
+			//pojo.setUsername(this.getUserDTO().getUsername());
+			pojo.setYfje(entity.getYfje());
+			pojo.setBz(entity.getBz());
+			JSONArray jsonArray = new JSONArray();
+	        jsonArray = JSONArray.fromObject(entity.getDjsps());
+		    jhBiz.saveOrUpdateJhd(pojo,jsonArray.toString());
+			return "{success:true}";
+	}
+	
+	/**
+	 * 保存/修改退货单
+	 */
+	@RequestMapping(value="/saveOrUpdateThd")
+	@ResponseBody
+	public String saveOrUpdateThd(Thd pojo,String djsps) {
+		try {
+//			Thd pojo = new Thd();
+//			pojo.setDjid(djid);
+//			pojo.setGysid(gysid);
+//			pojo.setGysname(gysname);
+//			pojo.setSfje(sfje);
+//			pojo.setJystate(jystate);
+//			pojo.setRiqi(riqi);
+//			//pojo.setUserid(this.getUserDTO().getUserid());
+//			//pojo.setUsername(this.getUserDTO().getUsername());
+//			pojo.setYfje(yfje);
+//			pojo.setBz(bz);
+			jhBiz.saveOrUpdateThd(pojo,djsps);
+			return "{success:true}";
+		} catch (Exception e) {
+			 e.printStackTrace();
+		}
+		return this.outError();
+	}
+	
+    
+	/**
+	 * 删除进货单
+	 */
+	@RequestMapping(value="/deleteJhd")
+	@ResponseBody
+	public String deleteJhd(String djid) {
+		try {
+			jhBiz.deleteJhd(djid);
+			return "{success:true}";
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		}
+		return this.outError();
+	}
+	
+	/**
+	 * 删除退货单
+	 */
+	@RequestMapping(value="/deleteThd")
+	@ResponseBody
+	public String deleteThd(String djid) {
+		try {
+			jhBiz.deleteThd(djid);
+			return "{success:true}";
+		} catch (Exception e) {
+			e.printStackTrace();		
+		}
+		return this.outError();
+	}
+	
+	/**
+	 * 按条件查询单据
+	 */
+	@RequestMapping(value="/findDjByParams")
+	@ResponseBody
+	public String findDjByParams(String startdate,String enddate,
+			String search,String djid,String jystate,String tab){
+		try {
+			StringBuffer wheres = new StringBuffer(" where 1=1");
+			if(startdate!=null&&enddate!=null){
+				wheres.append(" and t.riqi between '");
+				wheres.append(startdate);
+				wheres.append("' and '");
+				wheres.append(enddate);
+				wheres.append("'");
+			}
+			if(search!=null&&!"".equals(search)){
+				wheres.append(" and (t.djid like '%");
+				wheres.append(search);
+				wheres.append("%'");
+				wheres.append(" or t.gysname like '%");
+				wheres.append(search);
+				wheres.append("%')");
+			}else if(djid!=null){
+				wheres.append(" and t.djid='");
+				wheres.append(djid);
+				wheres.append("'");
+			}
+			if(jystate!=null&&!"".equals(jystate)){
+				wheres.append(" and t.jystate=");
+				wheres.append(jystate);
+			}
+			return this.outListString(jhBiz.findDjByParams(tab,wheres.toString()));
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		}
+		return this.outError();
+	}
+	
+	/**
+	 * 查询单据商品
+	 */
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value="/findDjspByParams")
+	@ResponseBody
+	public String findDjspByParams(String djid,String info,String tab){
+		try {
+			StringBuffer wheres = new StringBuffer(" where 1=1");
+			if(djid!=null){
+				wheres.append(" and t."+info+".djid='");
+				wheres.append(djid);
+				wheres.append("'");
+			}
+			List list = jhBiz.findDjByParams(tab,wheres.toString());
+			JSONArray jsonArray = new JSONArray();
+			if(list.size()>0){
+				JsonConfig config = new JsonConfig();
+				// 过滤相关的属性即可
+				config.setJsonPropertyFilter(new PropertyFilter() {
+					public boolean apply(Object source, String name, Object value) {
+						if (name.equals(info)) {
+							return true;
+						}
+						return false;
+					}
+				});
+				jsonArray = JSONArray.fromObject(list,config);
+			}
+			String jsonString = "{total:" + list.size() + ",root:"+ jsonArray.toString() + "}";
+			return jsonString;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return this.outError();
+	}
+	
+}

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,target-densitydpi=high-dpi,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+	<meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" >
+    <meta name="format-detection" content="telephone=no">
+<title>彩妆</title>
+<script src="js/jquery-2.1.1.min.js"></script>
+<link rel="stylesheet" type="text/css" href="css/index.css">
+</head>
+<script>
+$(function(){
+	$("#l_otop .l25").click(function(){
+		$("#l_otop").find(".l_red0").removeClass("l_red0");
+		$(this).find(".l_ospan").addClass("l_red0");
+		
+		if($(this).find("img").attr("src")){
+			
+			if($(this).find("img").attr("class")=="ascimg"){
+				$(this).find("img").removeClass("ascimg").addClass("descimg").attr("src", "images/desc.png");
+			}else{
+				$(this).find("img").removeClass("descimg").addClass("ascimg").attr("src", "images/asc.png");
+			};
+			
+		}else{
+			$("#l_otop").find("img").appendTo(this);
+		}
+		
+	});
+});
+</script>
+<body>
+<div class="main">
+	<div class="head">
+    	<div class="backdiv">
+        	<a href="javascript:history.back(-1)"><img src="images/det_order_06.png" /></a>
+        </div>
+        <div class="l20 l_title">
+        	彩妆
+        </div>
+        <div class="search_div long_s">
+        	<form id="myform" action="#">
+        	<div class="simg">
+            <img onclick="javascript:document.getElementById('myform').submit()" src="images/search.png">
+            </div>
+            <div class="stext">
+            	<input placeholder="搜索宝贝" type="text">
+            </div>
+            </form>
+        </div>
+    </div>
+    
+    <div class="layer">
+    	<div class="l_ohead">
+        	<div style="" class="l_main" id="l_otop">
+            	<div class="l25 textcenter" id="l_oprice"><span class="l_ospan l_red0">价格 </span><img class="ascimg" src="images/asc.png" /></div>
+            	<div class="l25 textcenter"><span style="float:left;">|</span><span class="l_ospan">销量</span></div>
+                <div class="l25 textcenter"><span style="float:left;">|</span><span class="l_ospan">人气</span></div>
+                <div class="l25 textcenter"><span style="float:left;">|</span><span class="l_ospan">活动</span></div>
+            </div>
+        	
+        </div>
+    </div>
+    
+    <div class="layer3">
+    	<div style="" class="l_main">
+        	<div class="l39"><a href="content.html"><img src="images/l_01.png" /></a></div>
+            <div class="r58">
+            	<div class="f13"><a class="i_hotpname" href="content.html">丸美细胞紧致除袋眼...</a></div>
+                <div class="l_price">￥124.0</div>
+                <div class="layer3">原价<span style="text-decoration:line-through;">￥399</span></div>
+                <div class="layer">
+                <span class="discount">2.4折</span>
+                <span style="" class="hassold">已售1354件</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="line1"></div>
+    
+    <div class="layer3">
+    	<div style="" class="l_main">
+        	<div class="l39"><a href="content.html"><img src="images/l_02.png" /></a></div>
+            <div class="r58">
+            	<div class="f13"><a class="i_hotpname" href="content.html">雅诗兰黛精华金枝套...</a></div>
+                <div class="l_price">￥344.9</div>
+                <div class="layer3">原价<span style="text-decoration:line-through;">￥999</span></div>
+                <div class="layer">
+                <span class="discount">1.5折</span>
+                <span style="" class="hassold">已售570件</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="line1"></div>
+    
+    <div class="layer3">
+    	<div style="" class="l_main">
+        	<div class="l39"><a href="content.html"><img src="images/l_03.png" /></a></div>
+            <div class="r58">
+            	<div class="f13"><a class="i_hotpname" href="content.html">创新刷头定制睫毛膏...</a></div>
+                <div class="l_price">￥142.0</div>
+                <div class="layer3">原价<span style="text-decoration:line-through;">￥158</span></div>
+                <div class="layer">
+                <span class="discount">2.5折</span>
+                <span style="" class="hassold">已售500件</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="line1"></div>
+    
+    <div class="layer3">
+    	<div style="" class="l_main">
+        	<div class="l39"><a href="content.html"><img src="images/l_03.png" /></a></div>
+            <div class="r58">
+            	<div class="f13"><a class="i_hotpname" href="content.html">创新刷头定制睫毛膏...</a></div>
+                <div class="l_price">￥142.0</div>
+                <div class="layer3">原价<span style="text-decoration:line-through;">￥158</span></div>
+                <div class="layer">
+                <span class="discount">2.5折</span>
+                <span style="" class="hassold">已售500件</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="line1"></div>
+    
+    <div class="layer3">
+    	<div style="" class="l_main">
+        	<div class="l39"><a href="content.html"><img src="images/l_03.png" /></a></div>
+            <div class="r58">
+            	<div class="f13"><a class="i_hotpname" href="content.html">创新刷头定制睫毛膏...</a></div>
+                <div class="l_price">￥142.0</div>
+                <div class="layer3">原价<span style="text-decoration:line-through;">￥158</span></div>
+                <div class="layer">
+                <span class="discount">2.5折</span>
+                <span style="" class="hassold">已售500件</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="line1"></div>
+    
+</div>
+</body>
+</html>

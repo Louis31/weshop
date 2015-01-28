@@ -1,0 +1,33 @@
+package com.service;
+
+import java.util.List;
+
+import com.entities.InformationTree;
+
+
+public interface InformationTreeBiz {
+
+	/**
+	 * 保存资讯类别
+	 */
+	public long save(InformationTree dto);
+	
+	
+	/**
+	 * 修改资讯类别
+	 */
+	public void update(InformationTree dto);
+	
+	
+	/**
+	 * 删除资讯类别
+	 */
+	public boolean delete(long lbid);
+
+	/**
+	 * 资讯类别树
+	 */
+	@SuppressWarnings("unchecked")
+	public List getInformationTree();
+
+}

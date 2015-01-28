@@ -1,0 +1,109 @@
+package com.service.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.cxstock.dao.BaseDAO;
+import com.cxstock.dao.DqkcDAO;
+import com.entities.Information;
+import com.service.InformationBiz;
+
+@SuppressWarnings("unchecked")
+@Service
+@Transactional
+public class InformationBizImpl implements InformationBiz {
+
+	@Resource
+	private DqkcDAO dqkcDao;
+	
+	@Resource
+	private BaseDAO baseDao;
+
+	@Override
+	public List<Information> getInformationBytree(Integer treeId, int star,
+			int end) {
+		// TODO Auto-generated method stub
+		List<Information> list = new ArrayList<Information>();
+		String hql = null;
+		if (treeId == 0) {
+			hql = "from Information inf where 1=1";
+		} else {
+			hql = "from Information inf where inf.treeId=" + treeId;
+		}
+		list = dqkcDao.findByHql(hql, star,end);
+		return list;
+	}
+
+	@Override
+	public void saveInformation(Information dto) {
+		// TODO Auto-generated method stub
+		dqkcDao.save(dto);
+	}
+
+	@Override
+	public void updateInformation(Information dto) {
+		// TODO Auto-generated method stub
+		dqkcDao.saveOrUpdate(dto);
+	}
+
+	@Override
+	public void deleteInformation(Integer id) {
+		// TODO Auto-generated method stub
+		dqkcDao.deleteById(Information.class, id);
+	}
+
+	@Override
+	public void clickInformation(Integer id, int sum) {
+		// TODO Auto-generated method stub
+		Information infor = (Information) dqkcDao.findByHql(
+				"from Information where id=" + id).get(0);
+		infor.setClick(infor.getClick() + sum);
+		dqkcDao.saveOrUpdate(infor);
+	}
+
+	@Override
+	public void collectInformation(Integer id, int sum) {
+		// TODO Auto-generated method stub
+		Information infor = (Information) dqkcDao.findByHql(
+				"from Information where id=" + id).get(0);
+		infor.setCollect(infor.getCollect() + sum);
+		dqkcDao.saveOrUpdate(infor);
+	}
+
+	@Override
+	public int getInformationCount(long treeId) {
+		// TODO Auto-generated method stub
+		int sum;
+		if (treeId == 0) {
+			sum = dqkcDao.countQuery("from Information inf where 1=1");
+		} else {
+			String hql = "from Information inf where inf.treeId=" + treeId;
+			sum = dqkcDao.countQuery(hql);
+		}
+		return sum;
+	}
+
+	@Override
+	public void setPTop(Integer id, int top) {
+		// TODO Auto-generated method stub
+		dqkcDao.update("update Information set ptop="+top+" where id="+id);
+	}
+
+	@Override
+	public void setFTop(Integer id, int top) {
+		// TODO Auto-generated method stub
+		dqkcDao.update("update Information set ftop="+top+" where id="+id);
+	}
+
+	@Override
+	public Information getOne(long id) {
+		// TODO Auto-generated method stub
+		return (Information) baseDao.loadById(Information.class, id);
+	}
+
+}

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title id="js-meta-title">菜单页_弹窗</title>
+<link rel="stylesheet" href="css/chosen.css" onerror="_cdnFallback(this)">
+<link rel="stylesheet" href="css/jquery.ui.css" onerror="_cdnFallback(this)">
+<link rel="stylesheet" href="css/bootstrap.css" onerror="_cdnFallback(this)">
+<link rel="stylesheet" href="css/pc.css" onerror="_cdnFallback(this)">
+<link rel="stylesheet" href="css/homepage.css" onerror="_cdnFallback(this)">
+<link rel="stylesheet" href="css/app_showcase.css" onerror="_cdnFallback(this)">
+<link rel="stylesheet" href="css/box.css" onerror="_cdnFallback(this)">
+</head>
+<body>
+<header class="ui-header">
+    <div class="ui-header-inner clearfix">
+        <h1 class="ui-header-logo"><a href="#"><img src="images/logo2.jpg" alt="聚惠圈"></a></h1>
+        <nav class="ui-header-nav">
+            <ul class="clearfix">
+                 <li class="js-weixin-notify "><a href="#">微信公众号</a></li>
+                 <li class="js-weixin-notify "><a href="#">基础信息</a></li>
+                 <li class="active "><a href="#">网站管理</a></li>
+                 <li class="js-weixin-notify "><a href="#">广告管理</a></li>
+                 <li class="js-weixin-notify "><a href="#">数据统计</a></li>
+            </ul>
+        </nav>
+        <div class="ui-header-user">
+            <div class="dropdown hover dropdown-right">
+                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+                    <span class="txt">
+                        <span class="name">欢迎你，浪客剑心</span>
+                        <span class="divide">/</span>
+                        </span> 设置</span>
+                    </span>
+                    <i class="caret"></i>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">个人设置</a></li>
+                    <li><a href="#">个人设置</a></li>
+                    <li><a href="#">个人设置</a></li>
+                    <li><a href="#">个人设置</a></li>
+                    <li class="divide"></li>
+                    <li><a href="#">退出</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- ▲ Main header -->
+
+<!-- ▼ Main container -->
+<div class="container">
+    <div class="">
+        <div class="app">
+            <div class="app-inner clearfix">
+            <!--弹窗开始！-->
+      <div class="theme-popover" style="top:50%; left:60%; display:block;">
+     <div class="theme-poptit"><span>菜单页</span>
+          <a href="javascript:;" title="关闭" class="close">X</a>
+     </div>
+     <div class="theme-popbod">
+      <div class="ui-box" style="margin-top:-30px;">
+                 <button class="btn js-reset-bg" type="button" style="float:right; margin:0 10px 10px 0;">暂无，直接创建</button>
+                 <table width="100%" border="0" cellspacing="5" cellpadding="0" class="list-tab">
+                      <tr class="list-tab-t">
+                        <td width="30%">菜单名称</td>
+                        <td width="22%">级别</td>
+                        <td width="15%">模版</td>
+                        <td width="17%">创建时间</td>
+                        <td width="16%">操作</td>
+                      </tr>
+                      <tr>
+                        <td class="td_img">针织衫 </td>
+                        <td>主菜单</td>
+                        <td>9宫格 </td>
+                        <td>2014.12.11</td>
+                        <td><button class="btn js-reset-bg" type="button">选取</button></td>
+                      </tr>
+                      <tr>
+                        <td class="td_img">西服</td>
+                        <td>子菜单</td>
+                        <td>9宫格 </td>
+                        <td>2014.12.11</td>
+                        <td><button class="btn js-reset-bg" type="button">选取</button></td>
+                      </tr>
+                 </table>
+                <div class="js-list-empty-region"></div>
+            </div>
+     </div>
+        </div>  
+     
+<!--弹窗结束！-->
+            
+          </div>
+      </div>
+                            
+    </div>
+ </div>
+                    <!-- ▲ Main container -->
+                    
+</body>
+</html>

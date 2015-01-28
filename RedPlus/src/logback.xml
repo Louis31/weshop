@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- debug="true" 启动时输出配置加载信息 scan="true" 默认每分钟自动扫描 scanPeriod="30 seconds" 
+	设置每30秒自动扫描,若没有指定具体单位则以milliseconds为标准(单位:milliseconds, seconds, minutes or 
+	hours) -->
+<configuration scan="true" scanPeriod="10 seconds" debug="true">
+
+	<contextName>MacroteaLogging</contextName>
+
+	<property name="tip" value="信息:" />
+	<property name="logback.logs.path" value="f:/ExerciseProject/jp-framwork/logs" />
+	<property name="logback.project.name" value="ROOT" />
+	<property name="logback.logs.module.name" value="default" />
+
+	<timestamp key="byDay" datePattern="yyyyMMdd" />
+
+	<!--控制台 -->
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender"
+		target="System.err">
+		<encoder charset="UTF-8">
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger.%M - %msg%n
+			</pattern>
+		</encoder>
+		<target>System.out</target>
+	</appender>
+
+	<appender name="allLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Encoding>UTF-8</Encoding>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!--日志文件输出的文件名 -->
+			<FileNamePattern>${logback.logs.path}/%d{yyyy-MM-dd}.log
+			</FileNamePattern>
+			<MaxHistory>30</MaxHistory>
+		</rollingPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
+			<pattern>%d{MMdd HH:mm:ss.SSS}[%level]%thread-%logger{0}.%M-%msg%n
+			</pattern>
+		</layout>
+	</appender>
+	<logger name="org.hibernate.engine.internal.StatisticalLoggingSessionEventListener" level="WARN"/>
+	<logger name="cn.gzjp" level="DEBUG"/>
+	<root level="INFO">
+		<!-- <appender-ref ref="allLog" /> -->
+		<appender-ref ref="console" />
+	</root>
+</configuration>

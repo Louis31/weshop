@@ -1,0 +1,118 @@
+package com.controller.struts2.power;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.controller.struts2.BaseController;
+import com.cxstock.biz.power.dto.RoleDTO;
+import com.cxstock.utils.pubutil.Page;
+import com.service.RoleBiz;
+
+@SuppressWarnings("serial")
+@Controller
+@RequestMapping("/role")
+public class RoleController extends BaseController {
+	
+	@Autowired
+	private RoleBiz roleBiz;
+	/**
+	 * 分页查询角色
+	 */
+	@RequestMapping(value="/findPageRole")
+	@ResponseBody
+	public String findPageRole(Integer limit,int start){
+		try {
+			Page page = new Page();
+			page.setStart(start);
+			page.setLimit(limit);
+			roleBiz.findPageRole(page);
+			return this.outPageString(page);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return this.outError();
+	}
+
+	/**
+	 * 保存/修改角色
+	 */
+	@RequestMapping(value="/saveOrUpdateRole")
+	@ResponseBody
+	public String saveOrUpdateRole(RoleDTO dto,Integer roleid) {
+		try {
+			roleBiz.saveOrUpdateRole(dto);
+			if(roleid==null){
+				return "{success:true,message:'保存成功!'}";
+			}else{
+				return "{success:true,message:'修改成功!'}";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return this.outError();
+	}
+    
+	/**
+	 * 删除角色
+	 */
+	@RequestMapping(value="/deleteRole")
+	@ResponseBody
+	public String deleteRole(Integer roleid) {
+		try {
+			boolean b = roleBiz.deleteRole(roleid);
+			if(b){
+				return "{success:true}";
+			}else{
+				return"{success:false,error:'该角色已被使用，不能删除'}";
+			}
+		} catch (Exception e) {
+		}
+		return "{success:false,error:'该角色已被使用，不能删除'}";
+	}
+	
+	/**
+	 * 角色下拉数据
+	 */
+	@RequestMapping(value="/findRoleType")
+	@ResponseBody
+	public String findRoleType() {
+		try {
+			return this.outListString(roleBiz.findRoleType());
+		} catch (Exception e) {
+			 e.printStackTrace();
+		}
+		return this.outError();
+	}
+	
+	/**
+	 * 角色权限菜单
+	 */
+	@RequestMapping(value="/findRoleMenu")
+	@ResponseBody
+	public String findRoleMenu(Integer roleid) {
+		try {
+			return this.outTreeJsonList(roleBiz.findRoleMenu(roleid));
+		} catch (Exception e) {
+			 e.printStackTrace();
+			 return this.outError();
+		}
+	}
+	
+	/**
+	 * 保存角色权限
+	 */
+	@RequestMapping(value="/saveRoleMenu")
+	@ResponseBody
+	public String saveRoleMenu(Integer roleid,String menuids) {
+		try {
+			roleBiz.saveRoleMenu(roleid,menuids);
+			return "保存成功!";
+		} catch (Exception e) {
+			 e.printStackTrace();
+		}
+		return this.outError();
+	}
+	
+}

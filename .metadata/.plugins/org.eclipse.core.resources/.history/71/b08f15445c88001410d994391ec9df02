@@ -1,0 +1,65 @@
+package com.i5le.redplus.service;
+
+import java.util.List;
+
+import javax.persistence.Query;
+
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.i5le.framwork.core.repository.BaseJapRepository;
+import com.i5le.framwork.core.service.BaseService;
+import com.i5le.redplus.entity.TbRedplusBack;
+import com.i5le.redplus.repository.OpenBoxRepository;
+
+@Component
+@Transactional
+public class OpenBoxService extends BaseService<TbRedplusBack, Integer> {
+
+	@Autowired
+	private OpenBoxRepository openBoxRepository;
+	
+	@Override
+	public BaseJapRepository<TbRedplusBack, Integer> getRepository() {
+		return this.openBoxRepository;
+	}
+	
+	public TbRedplusBack  findAllByOpenId(String tel,String box){
+		StringBuffer hql = new StringBuffer(
+				" select * from   tbredplusback  u where 1=1 and u.tel = '"+tel+"'");
+		if(StringUtils.isNotBlank(box)){
+			hql.append(" and u.boxName ='"+box+"'");
+		}
+		Query query = entityManager.createNativeQuery(hql.toString(),
+				TbRedplusBack.class);
+		
+		List<TbRedplusBack> list=query.getResultList();
+		if(list!=null&&list.size()>0){
+			return list.get(0);
+		}
+		return null;
+	}
+	
+	public TbRedplusBack  save(String openId,String box){
+		TbRedplusBack voBack  = new TbRedplusBack();
+		voBack.setBoxName(box);
+		voBack.setOpenId(openId);
+		voBack.setOpenCount(0);
+		return openBoxRepository.save(voBack);
+	}
+	
+	public TbRedplusBack geEntity(Integer id){
+		StringBuffer hql = new StringBuffer(
+				" select * from   tbredplusback  u where 1=1 and u.id = "+id+"");
+		Query query = entityManager.createNativeQuery(hql.toString(),
+				TbRedplusBack.class);
+		
+		List<TbRedplusBack> list=query.getResultList();
+		if(list!=null&&list.size()>0){
+			return list.get(0);
+		}
+		return null;
+	}
+}

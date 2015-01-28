@@ -1,0 +1,26 @@
+package com.service;
+
+import java.util.List;
+
+import com.cxstock.utils.pubutil.Page;
+import com.pojo.SpxxImage;
+
+public interface SpxxImageBiz {
+	public void save(SpxxImage dto);
+	
+	/**
+	 * 修改改商品
+	 */
+	public void updateSpxx(SpxxImage dto);
+	
+	/**
+	 * 删除商品
+	 */
+	public boolean deleteSpxx(Integer id);
+	
+	/*
+	 * 分页查询商品列表
+	 */
+	@SuppressWarnings("unchecked")
+	public void findPageSpxx(Page page);
+}

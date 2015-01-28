@@ -1,0 +1,200 @@
+/*!
+ * 进货入库
+ */
+Ext.onReady(function(){
+	
+	Ext.QuickTips.init();
+	var SpxxObj = [
+        { name:'id', type:'int'},
+		{ name:'spid', type:'string'},
+		{ name:'spname', type:'string'},
+		{ name:'stars', type:'string'},
+		{ name:'reviewer', type:'string'},
+		{ name:'revTime', type:'date'},
+		{ name:'content', type:'string'},
+		{ name:'top', type:'string'},
+		{ name:'revcon', type:'string'}
+	];
+	var v_spid="0", v_spname=""
+	//商品数据
+	var jhspStore = new Ext.data.JsonStore({
+	    url: ctx+'/comment/getCommentByStar.do',
+	    root: 'root',
+	    totalProperty: 'total',
+	    fields: SpxxObj,
+	    listeners:{beforeload:function(a){a.baseParams={start:v_start, limit:v_limit};}}
+	});
+	
+	//评论列表
+    var jhspGrid = new Ext.grid.GridPanel({
+    	id:'djspGrid',
+        store: jhspStore,
+        cm: new Ext.grid.ColumnModel({
+			defaults: {	menuDisabled : true},//禁止表头菜单
+			columns:[
+			     new Ext.grid.RowNumberer(),
+				{header: '商品编号', width: 100, sortable:true, dataIndex: 'spid'},
+	            {header: '商品名称', width: 200, sortable:true, dataIndex: 'spname'},
+	            {header: '评价星级', width: 150, sortable:true, dataIndex: 'xinghao'},
+	            {header: '发布者', width: 100, sortable:true, dataIndex: 'dw'},
+	            {header: '发布时间', width: 100, sortable:true, align:'right', renderer:zhMoney, dataIndex: 'cbj'},
+	            {header: '浏览评价', width: 100, sortable:true, align:'center', dataIndex: 'sl'},
+	            {header: '管理', width: 100, sortable:true, align:'center', dataIndex: 'spid',renderer:function(){
+	            	return "<a>删除</a>";
+	            }}
+	            ]
+        }),
+        stripeRows: true, 	//行分隔符
+        columnLines : true, //列分隔符
+        margins:'20',
+        style:'border:1px solid',
+		region:'center',
+        iconCls:'',
+        
+        tbar:[{
+        	text:'★好差',
+        	iconCls:'',
+        	handler: function(){
+        		bsspWindow.show();
+        	}
+        },'-',{
+        	text:'★★差',
+        	iconCls:'',
+        	handler: function(){
+        		
+        	}
+        },'-',{
+        	text:'★★★良好',
+        	iconCls:'',
+        	handler: function(){
+        		var record= jhspGrid.getSelectionModel().getSelected();
+        	}
+        },'-',{
+        	text:'★★★★好',
+        	iconCls:'',
+        	handler: function(){
+        		var record= jhspGrid.getSelectionModel().getSelected();
+        	}
+        }
+        ,'-',{
+        	text:'★★★★★非常好',
+        	iconCls:'',
+        	handler: function(){
+        		var record= jhspGrid.getSelectionModel().getSelected();
+        	}
+        }
+        ],
+    bbar: new Ext.PagingToolbar({
+        pageSize: 15,
+        store: jhspStore,
+        displayInfo: true
+    })
+        ,
+        listeners:{
+             	render:function(){
+             		var tbar = new Ext.Toolbar ({
+             			items:[
+             			    {
+             	        	text:'设为置顶',
+             	        	iconCls:'btn-edit',
+             	        	handler: function(){
+             	        		var record= grid.getSelectionModel().getSelected(); 
+             	        	}
+             	           },{
+                	        	text:'删除所选',
+                 	        	iconCls:'btn-edit',
+                 	        	handler: function(){
+                 	        		var record= grid.getSelectionModel().getSelected(); 
+                 	        	}
+                 	           },
+                 	          {
+                    	        	text:'新增评论',
+                    	        	iconCls:'btn-edit',
+                    	        	handler: function(){
+                    	        		addWindow.show();
+                    	        	}
+                    	      }
+             			]
+             		});
+             tbar.render(jhspGrid.tbar);
+            },
+             
+        	rowdblclick:function(){
+        		var record= jhspGrid.getSelectionModel().getSelected(); 
+				if(record){
+	        		addJhWindow.show();
+	        		addJhWindow.buttons[0].setVisible(false);
+	        		record.set("update","true");
+					addJhForm.getForm().loadRecord(record);
+				}
+        	}
+        }
+    });
+    
+	
+	
+    //  add
+    //商品表单
+    var addForm = new Ext.FormPanel({
+		layout : 'form',
+		frame:true,
+		labelWidth:60,
+		border : false,
+		padding : '15 10 0 8',
+		defaults : {
+			anchor : '100%'
+		},
+		items:[
+		       {
+		    	   
+		       }
+		      ]
+	});
+    
+  //增加商品窗口
+    var addWindow = new Ext.Window({
+		title : '增加评论',
+		width:"50%",
+		height:200,
+		closeAction:'hide',
+		modal : true,
+		border:false,
+		resizable : false,
+		layout : 'fit',
+		buttonAlign : 'center',
+		items : [addForm],
+		buttons : [{
+			text : '保存',
+			handler : function() {
+				
+			}
+		}, {
+			text : '取消',
+			handler : function() {
+				
+			}
+		}]
+	});
+    // add
+  
+	//布局
+    new Ext.Viewport({
+		layout:'fit',
+		items:[{
+			frame:true,
+			title:'',
+			iconCls:'menu-11',
+			layout:'border',
+			items:[jhspGrid]
+		}],
+		listeners:{
+			render:function(){
+				jhspStore.load();
+			}
+		}
+	});
+	
+ 
+	
+
+});

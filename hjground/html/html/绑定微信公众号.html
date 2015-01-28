@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title id="js-meta-title">主页管理</title>
+<link rel="stylesheet" href="css/chosen.css" onerror="_cdnFallback(this)">
+<link rel="stylesheet" href="css/jquery.ui.css" onerror="_cdnFallback(this)">
+<link rel="stylesheet" href="css/bootstrap.css" onerror="_cdnFallback(this)">
+<link rel="stylesheet" href="css/pc.css" onerror="_cdnFallback(this)">
+<link rel="stylesheet" href="css/homepage.css" onerror="_cdnFallback(this)">
+</head>
+<body>
+<header class="ui-header">
+    <div class="ui-header-inner clearfix">
+        <h1 class="ui-header-logo"><a href="#"><img src="images/logo2.jpg" alt="聚惠圈"></a></h1>
+        <nav class="ui-header-nav">
+            <ul class="clearfix">
+                 <li class="js-weixin-notify "><a href="#">微信公众号</a></li>
+                 <li class="js-weixin-notify "><a href="#">基础信息</a></li>
+                 <li class="active "><a href="#">网站管理</a></li>
+                 <li class="js-weixin-notify "><a href="#">广告管理</a></li>
+                 <li class="js-weixin-notify "><a href="#">数据统计</a></li>
+            </ul>
+        </nav>
+        <div class="ui-header-user">
+            <div class="dropdown hover dropdown-right">
+                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+                    <span class="txt">
+                        <span class="name">欢迎你，浪客剑心</span>
+                        <span class="divide">/</span>
+                        </span> 设置</span>
+                    </span>
+                    <i class="caret"></i>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">个人设置</a></li>
+                    <li><a href="#">个人设置</a></li>
+                    <li><a href="#">个人设置</a></li>
+                    <li><a href="#">个人设置</a></li>
+                    <li class="divide"></li>
+                    <li><a href="#">退出</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- ▲ Main header -->
+
+<!-- ▼ Main container -->
+<div class="container">
+    <div class="">
+        <div class="app">
+            <div class="app-inner clearfix">
+             <h2><em>第一步：绑定微信公众号</em> > 第二步：配置微信公众号</h2>
+            <div class="main main-login clearfix">
+        <form class="form-horizontal" 360chrome_form_autofill="2">
+            <fieldset>
+                <div class="control-group">
+                    <label class="control-label">公众号名称：</label>
+                    <div class="controls">
+                        <input tabIndex="1" name="account" value="" type="text" placeholder="">
+                        <em>*</em>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">公众号原始ID：</label>
+                    <div class="controls">
+                        <input tabIndex="2" name="password" value="" type="password" placeholder="">
+                        <em>*</em>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">微信号：</label>
+                    <div class="controls">
+                        <input class="half-input" tabIndex="3" name="captcha_code" value="" type="text" placeholder="">
+                        <em>*</em>
+                  </div>
+              </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <label class="auto-login">
+                            <a href="#" style="color:#06C;">怎么查看微信公众号这些信息？</a>
+                        </label>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <button class="btn  btn-primary login-btn" tabIndex="5" style="margin-right:20px;">登录</button>
+                        <button class="btn " tabIndex="5" >取消</button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+            </div>
+      </div>
+                            <aside class="ui-sidebar sidebar" style="min-height: 677px;">
+                            <nav>
+                                <ul>
+                                    <li>微信公众号</li>
+                                </ul>
+                                <ul>
+                                    <li><a href="#">绑定微信公众号</a></li>
+                                    <li><a href="#">配置微信公众号</a></li>
+                                </ul>
+                            </nav>          
+                              <footer class="ui-footer" style=" margin:50px 0 0 -10px; float:left;">
+                                   <img src="images/2cod.jpg">
+                                   <div class="copy_url"><a href="#">复制网址</a></div>
+                                </footer>
+                            </aside>
+                        </div>
+                    </div>
+                    <!-- ▲ Main container -->
+                    <div class="js-notifications notifications"></div>
+                    <div class="back-to-top hide">
+                        <a href="#" class="js-back-to-top"><i class="icon-chevron-up"></i>返回顶部</a>
+                    </div>
+</body>
+</html>

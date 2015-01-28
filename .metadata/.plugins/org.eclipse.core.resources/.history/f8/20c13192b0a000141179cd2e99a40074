@@ -1,0 +1,185 @@
+package com.controller;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import net.sf.json.JSONObject;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
+import org.apache.http.util.EntityUtils;
+import org.apache.log4j.Logger;
+
+import com.common.SysContext;
+
+/**
+ * 
+ * @ClassName: OauthUtil
+ * @Description: 网页授权工具类
+ * @author liurb
+ * @date 2014-3-12 下午8:58:10
+ * 
+ */
+public class OAuth2Util {
+
+    private static final Logger logger = Logger.getLogger(OAuth2Util.class);
+
+   // private static PropertyContext propertyContext = PropertyContext.PropertyContextFactory("weChat.properties");
+
+    /**
+     * 
+     * @Title: getCode
+     * @Description: 用户同意授权，获取code
+     * @return
+     */
+    public static String getCode() {
+        // http://open.weixin.qq.com/connect/oauth2/authorize?
+        // appid=wx5545f0a87191d212&redirect_uri=http://weixintest.10155.com/wechat/getCode.html
+        // &response_type=code&scope=snsapi_base&state=2#wechat_redirect
+    	
+        String url = SysContext.getConfig("oauth.authorize_url") + "?appid=" + SysContext.getConfig("appid") 
+            + "&redirect_uri=" + SysContext.getConfig("oauth.redirect_uri") 
+            + "&response_type=code&scope=snsapi_base&state=2#wechat_redirect";
+        logger.info("getcoe------->" + url);
+        
+        return url;
+    }
+    
+    /**
+     * @Title: getCodeWithSuffix
+     * @Description: 用户同意授权，获取code
+     * @param redirect_uri 重定向地址
+     * @return url   
+     * @throws
+     */
+    public static String getCodeWithSuffix(String suffix) {    	
+        String url = SysContext.getConfig("oauth.authorize_url") + "?appid=" + SysContext.getConfig("appid") 
+            + "&redirect_uri=" +SysContext.getConfig("oauth.domain_name")+ suffix 
+            + "&response_type=code&scope=snsapi_base&state=2#wechat_redirect";
+        logger.info("getcoe------->" + url);
+        
+        return url;
+    }
+    /**
+     * @Title: getCodeWithSuffix
+     * @Description: 用户同意授权，获取code
+     * @param redirect_uri 重定向地址(不带参数)
+     * @param redirectUrl 二次重定向地址(参数之间使用“_”分割,)
+     * @return url   
+     * @throws
+     */
+    public static String getCodeWithSuffix(String suffix,String redirectUrl) {    	
+//    	String url = propertyContext.get("oauth.authorize_url") + "?appid=" + propertyContext.get("appid") 
+//    			+ "&redirect_uri=" +propertyContext.get("oauth.domain_name")+ suffix 
+//    			+ "&response_type=code&scope=snsapi_base&state=/wostar2/singer/toSingerBoard.do?singerLabel=bjPreliminary_loginName=111#wechat_redirect";
+//    	logger.info("getcoe------->" + url);
+    	if(StringUtils.isBlank(redirectUrl)){
+    		redirectUrl = "";
+    	}
+    	String url = SysContext.getConfig("oauth.authorize_url") + "?appid=" + SysContext.getConfig("appid") 
+    			+ "&redirect_uri=" +SysContext.getConfig("oauth.domain_name")+ suffix 
+    			+ "&response_type=code&scope=snsapi_base&state="+redirectUrl+"#wechat_redirect";
+    	logger.info("getcoe------->" + url);
+    	
+    	return url;
+    }
+
+    /**
+     * 功能说明 : 通过授权code换取用户唯一标识
+     *
+     * @param code 授权码
+     * @return
+     * @time Mar 13, 2014 3:53:30 PM
+     */
+    @SuppressWarnings("deprecation")
+	public static String getOpenId(String code) {
+        logger.info("用户同意授权，获取code :" + code);
+        
+        String appid = SysContext.getConfig("appid");
+        String secret = SysContext.getConfig("secret");
+        String redirtUrl = SysContext.getConfig("oauth.access_token_url") + "?appid=" + appid + "&secret=" + secret + "&code=" + code + "&grant_type=authorization_code";
+        
+        logger.info("redirtUrl: " + redirtUrl);
+        HttpClient httpClient = new DefaultHttpClient();
+        HttpPost post = postForm(redirtUrl,null);
+        
+        String body = invoke(httpClient,post);
+        JSONObject json = JSONObject.fromObject(body);
+        Object obj = json.get("openid");
+        if (obj != null) {
+          return obj.toString();
+        }       
+        httpClient.getConnectionManager().shutdown();  
+        return null;
+    }
+    
+    private static String invoke(HttpClient httpclient,  
+    		HttpPost httpost) {  
+          
+        HttpResponse response = sendRequest(httpclient, httpost);  
+        String body = paseResponse(response);  
+          
+        return body;  
+    }  
+    
+    private static HttpPost postForm(String url, Map<String, String> params){  
+        
+        HttpPost httpost = new HttpPost(url);  
+        List<NameValuePair> nvps = new ArrayList <NameValuePair>();  
+          
+        Set<String> keySet = params.keySet();  
+        for(String key : keySet) {  
+            nvps.add(new BasicNameValuePair(key, params.get(key)));  
+        }  
+          
+        try {  
+            httpost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));  
+        } catch (UnsupportedEncodingException e) {  
+            e.printStackTrace();  
+        }  
+          
+        return httpost;  
+    }  
+    
+    private static String paseResponse(HttpResponse response) {  
+        HttpEntity entity = response.getEntity();  
+          
+        String charset = EntityUtils.getContentCharSet(entity);  
+          
+        String body = null;  
+        try {  
+            body = EntityUtils.toString(entity);  
+        } catch (IOException e) {  
+            e.printStackTrace();  
+        }  
+          
+        return body;  
+    }  
+  
+    private static HttpResponse sendRequest(HttpClient httpclient,  
+            HttpUriRequest httpost) {  
+        HttpResponse response = null;  
+          
+        try {  
+            response = httpclient.execute(httpost);  
+        } catch (ClientProtocolException e) {  
+            e.printStackTrace();  
+        } catch (IOException e) {  
+            e.printStackTrace();  
+        }  
+        return response;  
+    }  
+}

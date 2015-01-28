@@ -1,0 +1,10 @@
+package com.pojo;
+
+
+public class SpxxImage {
+     private Integer id;
+     private String url;
+     private String spid;
+     private String content;
+     
+}

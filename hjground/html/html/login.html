@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title id="js-meta-title">登录</title>
+<link  rel="stylesheet" href="css/bootstrap.css">
+<link  rel="stylesheet" href="css/app_account.css">
+</head>
+<body class="theme theme--blue">
+<div class="js-notifications notifications"></div>
+<div class="container">
+    <div class="content" role="main">
+        <div class="app">
+            <div class="app-init-container"><div>
+            <div class="container">
+            <div class="header">
+            <a href="#">
+            <div class="header-logo"></div>
+            </a>
+        <div class="header-title">登录</div>
+    </div>
+    <div class="main main-login clearfix">
+        <form class="form-horizontal" 360chrome_form_autofill="2">
+            <fieldset>
+                <div class="control-group">
+                    <label class="control-label">手机号码：</label>
+                    <div class="controls">
+                        <input tabIndex="1" name="account" value="" type="text" placeholder="">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">登录密码：</label>
+                    <div class="controls">
+                        <input tabIndex="2" name="password" value="" type="password" placeholder="">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">验证码：</label>
+                    <div class="controls">
+                        <input class="half-input" tabIndex="3" name="captcha_code" value="" type="text" placeholder="">
+                        <img class="captcha-img" src="images/yzm.png">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <label class="auto-login">
+                            <input tabIndex="-1" name="auto_login" CHECKED="" type="checkbox">
+                            三天内自动登录
+                        </label>
+                        <a class="lost-pw" tabIndex="-1" href="#" target="_blank">忘记密码?</a>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <button class="btn btn-large btn-primary login-btn" tabIndex="5" data-loading-text="正在登录...">登录</button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+
+        <div class="side-wrap">
+            <div class="login-qrcode"></div>
+            <h4 class="side-desc">下载聚惠圈APP</h4>
+        </div>
+    </div>
+
+    <div class="footer"><p class="copyright"><a href="#/">www.juhuiquan.cn</a></p></div>
+</div>
+</div></div>
+            <div class="notify-bar js-notify animated hinge hide">
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

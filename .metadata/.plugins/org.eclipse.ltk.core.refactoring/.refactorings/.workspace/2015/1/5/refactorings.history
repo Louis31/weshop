@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy 0 elements to &apos;WeiShop/front/com.controller.struts2.information&apos;&#x0A;- Destination element: &apos;WeiShop/front/com.controller.struts2.information&apos;" description="Copy compilation units" destination="=WeiShop/front&lt;com.controller.struts2.information" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1422186364347" units="0" version="1.0"/>
+</session>

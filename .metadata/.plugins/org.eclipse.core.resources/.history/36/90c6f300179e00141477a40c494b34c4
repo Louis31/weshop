@@ -1,0 +1,221 @@
+
+HTMLEditor = Ext.extend(Ext.form.HtmlEditor, {
+    addImage : function() {
+        var editor = this;
+        var imgform = new Ext.FormPanel({
+            region : 'center',
+            labelWidth : 55,
+            frame : true,
+            bodyStyle : 'padding:5px 5px 0',
+            autoScroll : true,
+            border : false,
+            fileUpload : true,
+            items : [{
+            	    xtype: 'tabpanel',
+                    enableTabScroll: true,
+                    bodyPadding: '1 1 1 1',
+                    items: [{
+                      title: '上传本地图片',
+                      items: [{
+                        xtype: 'form',
+                        layout: 'column',
+                        autoScroll: true,
+                        border: false,
+                        defaults: {
+                          columnWidth: 1,
+                          labelWidth: 70,
+                          labelAlign: 'right',
+                          padding: '5 5 5 5',
+                          allowBlank: false
+                        },
+                        items: [{
+                          xtype: 'fileuploadfield',
+                          fieldLabel: '选择文件',
+                          beforeLabelTextTpl: '<span style="color:#FF0000;">*</span>',
+                          buttonText: '请选择...',
+                          name: 'editimage',
+                          emptyText: '请选择图片',
+                          blankText: '图片不能为空',
+                          listeners: {
+                            change: function (view, value, eOpts) {
+                            	editor.uploadImgCheck(view, value);
+                            }
+                          }
+                        }, {
+                          xtype: 'fieldcontainer',
+                          fieldLabel: '图片大小',
+                          layout: 'hbox',
+                          defaultType: 'numberfield',
+                          defaults: {
+                            flex: 1,
+                            labelWidth: 20,
+                            labelAlign: 'right',
+                            allowBlank: true
+                          },
+                          items: [{
+                            fieldLabel: '宽',
+                            name: 'width',
+                            minValue: 1
+                          }, {
+                            fieldLabel: '高',
+                            name: 'height',
+                            minValue: 1
+                          }]
+                        }, {
+                          xtype: 'textfield',
+                          fieldLabel: '图片说明',
+                          name: 'content',
+                          allowBlank: true,
+                          maxLength: 100,
+                          emptyText: '简短的图片说明'
+                        }, {
+                          columnWidth: 1,
+                          xtype: 'fieldset',
+                          title: '上传须知',
+                          layout: {
+                            type: 'table',
+                            columns: 1
+                          },
+                          collapsible: false, //是否可折叠
+                          defaultType: 'label', //默认的Form表单组件
+                          items: [{
+                            html: '1.上传图片不超过100KB'
+                          }, {
+                            html: '2.为了保证图片能正常使用，我们支持以下格式的图片上传'
+                          }, {
+                            html: '   jpg,jpeg,png,gif'
+                          }]
+                        }]
+                      }]
+                    }
+                    ]
+                  
+                    }],
+            buttons : [{
+                text : '上传',
+                type : 'submit',
+                handler : function() {
+                    if (!imgform.form.isValid()) {return;}
+                    imgform.form.submit({
+                        waitMsg : '正在上传',
+                        url : ctx+'/editorimage/uploadEditorImage',
+                        success : function(form, action) {
+                        	insertImg(editor,action.result);
+//                            var element = document.createElement("img");
+//                            element.src = ctx+"/upload/editorimage/"+action.result.data;
+//                            if (Ext.isIE) {
+//                            	insertImg(action.result);
+//                                editor.insertAtCursor(element.outerHTML);
+//                            } else {
+//                                var selection = editor.win.getSelection();
+//                                if (!selection.isCollapsed) {
+//                                    selection.deleteFromDocument();
+//                                }
+//                                selection.getRangeAt(0).insertNode(element);
+//                            }
+                            win.hide();
+                        },
+                        failure : function(form, action) {
+                            form.reset();
+                            if (action.failureType == Ext.form.Action.SERVER_INVALID)
+                                Ext.MessageBox.alert('警告',
+                                        action.result.errors.msg);
+                        }
+                    });
+                }
+            }, {
+                text : '关闭',
+                type : 'submit',
+                handler : function() {
+                    win.close(this);
+                }
+            }]
+        })
+
+        var win = new Ext.Window({
+                    title : "上传图片",
+                    width : 300,
+                    height : 200,
+                    modal : true,
+                    border : false,
+                    iconCls : ctx+"/static/images/picture.png",
+                    layout : "fit",
+                    items : imgform
+
+                });
+        win.show();
+    },
+    createToolbar : function(editor) {
+        HTMLEditor.superclass.createToolbar.call(this, editor);
+        this.tb.insertButton(16, {
+                    cls : "x-btn-icon",
+                    icon : ctx+"/static/images/picture.png",
+                    handler : this.addImage,
+                    scope : this
+                });
+    },
+    /**
+     * 插入图片
+     * */
+     insertImg: function (view, data) {
+       var url = data.url;
+       var content = data.content;
+       var width = data.width;
+       var height = data.height;
+       var str = '<img src="' + url + '" border="0" ';
+       if (content != undefined && content != null && content != '') {
+         str += ' title="' + content + '" ';
+       }
+       if (width != undefined && width != null && width != 0) {
+         str += ' width="' + width + '" ';
+       }
+       if (height != undefined && height != null && height != 0) {
+         str += ' height="' + height + '" ';
+       }
+       str += ' />';
+       view.insertAtCursor(str);
+     },
+    /**
+     * 上传图片验证
+     **/
+    
+     uploadImgCheck: function (fileObj, fileName) {
+       var scope = this;
+       //图片类型验证
+       if (!(scope.getImgTypeCheck(scope.getImgHZ(fileName)))) {
+         Ext.MessageBox.alert('温馨提示', '上传图片类型有误');
+         fileObj.reset(); //清空上传内容
+         return;
+       }
+     },
+
+     /**
+     * 获取图片后缀(小写)
+     * */
+     getImgHZ: function (imgName) {
+       //后缀
+       var hz = '';
+       //图片名称中最后一个.的位置
+       var index = imgName.lastIndexOf('.');
+       if (index != -1) {
+         //后缀转成小写
+         hz = imgName.substr(index + 1).toLowerCase();
+       }
+       return hz;
+     },
+
+     /**
+     * 图片类型验证
+     * */
+     getImgTypeCheck: function (hz) {
+       var typestr = 'jpg,jpeg,png,gif';
+       var types = typestr.split(','); //图片类型
+       for (var i = 0; i < types.length; i++) {
+         if (hz == types[i]) {
+           return true;
+         }
+       }
+       return false;
+     }
+});
+Ext.reg('StarHtmleditor', HTMLEditor);

@@ -1,0 +1,174 @@
+﻿package com.controller.struts2.information;
+
+import java.util.Date;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.controller.struts2.BaseController;
+import com.cxstock.biz.power.dto.UserDTO;
+import com.cxstock.utils.pubutil.Page;
+import com.cxstock.utils.system.Constants;
+import com.entities.Comment;
+import com.entities.Information;
+import com.entities.InformationTree;
+import com.service.CommentBiz;
+import com.service.InformationBiz;
+import com.service.InformationTreeBiz;
+
+
+@Controller
+@RequestMapping("/information")
+public class InformationController extends BaseController {
+	
+	@Autowired
+	private InformationBiz informationBiz;
+	
+	/**
+	 * 根据类别获取资讯，类别为0时，获取全部
+	 */
+	@RequestMapping(value="/getInformationBytree")
+	@ResponseBody
+	public String getInformationBytree(int tree,Page page) {
+		
+		try {
+			List list = informationBiz.getInformationBytree(tree,page.getStart(),page.getLimit());
+			page.setRoot(list);
+			page.setTotal(informationBiz.getInformationCount(tree));
+			return this.outPageString(page);
+		} catch (Exception e) {
+			return this.outError();
+		}
+	}	
+	
+	
+	/**
+	 * 根据类别获取资讯总数，类别为0时，获取全部
+	 */
+	@RequestMapping(value="/getInformationcount")
+	@ResponseBody
+	public String getInformationCount(int tree) {
+		try {
+			return this.outObjString(informationBiz.getInformationCount(tree));
+		} catch (Exception e) {
+			return this.outError();
+		}
+	}	
+	
+	
+	/**
+	 * 新增资讯
+	 */
+	@RequestMapping(value="/saveInformation")
+	@ResponseBody
+	public String saveInformation(Information dto,HttpServletRequest request) {
+		try {
+			dto.setCtime(new Date());
+			
+		    informationBiz.saveInformation(dto);
+		    return this.outObjString(0);
+		} catch (Exception e) {
+			 return this.outError();
+		}
+	}
+	
+	/**
+	 * 修改资讯
+	 */
+	@RequestMapping(value="/updateInformation")
+	@ResponseBody
+	public String updateInformation(Information dto,HttpServletRequest request) {
+		try {
+			dto.setUtime(new Date());
+			UserDTO obj = (UserDTO) request.getSession().getAttribute(Constants.USERINFO);
+			if(obj!=null){
+				dto.setUauthor_id(obj.getLogincode());
+				dto.setUauthor(obj.getUsername());
+			}
+			informationBiz.updateInformation(dto);
+		    return this.outObjString(0);
+		} catch (Exception e) {
+			 return this.outError();
+		}
+	}
+	
+	/**
+	 * 删除资讯
+	 */
+	@RequestMapping(value="/deleteInformation")
+	@ResponseBody
+	public String deleteInformation(long id) {
+		try {	    
+			informationBiz.deleteInformation(id);
+		    return this.outObjString(0);
+		} catch (Exception e) {
+			 return this.outError();
+		}
+	}
+	
+	
+	/**
+	 * 增加资讯点击数
+	 */
+	@RequestMapping(value="/clickInformation")
+	@ResponseBody
+	public String clickInformation(long id,int sum) {
+		try {	    
+			informationBiz.clickInformation(id,sum);
+		    return this.outObjString(0);
+		} catch (Exception e) {
+			 return this.outError();
+		}
+	}
+	
+	/**
+	 * 增加资讯收藏数
+	 */
+	@RequestMapping(value="/collectInformation")
+	@ResponseBody
+	public String collectInformation(long id,int sum) {
+		try {	    
+			informationBiz.collectInformation(id,sum);
+		    return this.outObjString(0);
+		} catch (Exception e) {
+			 return this.outError();
+		}
+	}
+	
+	/**
+	 * 设置频道置顶
+	 */
+	@RequestMapping(value="/setPTop")
+	@ResponseBody
+	public String setPTop(long id,int top) {
+		try {	    
+			informationBiz.setPTop(id,top);
+		    return this.outObjString(0);
+		} catch (Exception e) {
+			 return this.outError();
+		}
+	}
+	
+	/**
+	 * 设置首页置顶
+	 */
+	@RequestMapping(value="/setFTop")
+	@ResponseBody
+	public String setFTop(long id,int top) {
+		try {	    
+			informationBiz.setFTop(id,top);
+		    return this.outObjString(0);
+		} catch (Exception e) {
+			 return this.outError();
+		}
+	}
+	
+}

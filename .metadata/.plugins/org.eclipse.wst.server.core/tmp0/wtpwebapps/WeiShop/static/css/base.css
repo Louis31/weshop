@@ -1,0 +1,134 @@
+@CHARSET "UTF-8";
+/*基础定义*/
+body, html
+{
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    font-size: 12px;
+    background-color: #ffffff;
+}
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, p, blockquote, th
+{
+    padding: 0;
+    margin: 0;
+    font-size: 12px;
+}
+img
+{
+    border: none;
+}
+table
+{
+    border-collapse: collapse;
+    border-spacing: 0;
+    font-size:12px;
+}
+ol, ul, li
+{
+    list-style: none;
+    list-style-type: none;
+}
+caption, th
+{
+    text-align: left;
+}
+h1, h2, h3, h4, h5, h6
+{
+    font-weight: normal;
+    font-size: 100%;
+}
+a
+{
+    color: #000;
+    text-decoration: none;
+    cursor: hand;
+}
+img
+{
+    display: inline-block;
+    vertical-align: middle;
+}
+input
+{
+    vertical-align: middle;
+}
+
+/* 左边分栏样式 */
+.main_left {
+float: left;
+width: 208px;
+height: 100%;
+background: #616C7A;
+overflow: hidden;
+position: relative;
+}
+
+
+.main_left .bottom {
+width: 100%;
+height: 50px;
+background-color:#333;
+position: absolute; bottom: 0;
+}
+/* 右边边分栏样式 */
+.main_right{
+	float: left;	
+	width: 100%;
+	height: 100%;
+	margin-right:-208px;	
+	background: #ccc;
+	overflow: hidden;	
+}
+.main_right .content{
+	height: 100%;
+	margin-right:208px;	
+	position: relative;
+}
+
+.rightcontent{
+	padding:5px;
+}
+
+.rightbottomtoolbar {
+width: 100%;
+height: 50px;
+background: url(../images/common/gongneng.gif) no-repeat right #333;
+position: absolute; bottom: 0;
+text-align:center;
+}
+
+/*右边分栏底部按钮样式*/
+.bot_btn_bg
+{
+    width: 143px;
+    height: 44px;
+    margin: 4px 15px;    
+    /* float: left; */
+    cursor:pointer;
+    display:inline-block;
+}
+.bot_btn_bg:hover
+{
+    background: url(../images/common/btn_mouseOver.png) no-repeat;
+}
+
+.bot_btn_bg a
+{
+    width: 120px;
+    height: 30px;
+    line-height: 30px;
+    padding-left: 15px;
+    margin: auto;
+    margin-top: 7px;
+    color: white;
+    font-size: 14px;
+    display: block;
+    background-position: center left;
+    background-repeat: no-repeat;
+    display:inline-block;
+}
+
+.bot_nav_backup {
+background: url(../images/common/backup_normal.png);
+}

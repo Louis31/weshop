@@ -1,0 +1,208 @@
+package com.i5le.redplus.web;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.i5le.framwork.core.entity.AjaxResult;
+import com.i5le.framwork.core.service.BaseService;
+import com.i5le.framwork.core.web.BaseCRUDController;
+import com.i5le.framwork.core.web.PageRequestBulider;
+import com.i5le.framwork.core.web.Servlets;
+import com.i5le.framwork.sys.entity.User;
+import com.i5le.redplus.entity.AreaCode;
+import com.i5le.redplus.entity.GiftInfo;
+import com.i5le.redplus.entity.TheMessage;
+import com.i5le.redplus.entity.UserInfo;
+import com.i5le.redplus.service.AreaCodeService;
+import com.i5le.redplus.service.GiftInfoService;
+import com.i5le.redplus.service.TheMessageService;
+import com.i5le.redplus.service.UserInfoService;
+import com.redplus.view.utils.GsonUtil;
+
+@Controller
+@RequestMapping(value = "/messageInfo")
+public class TheMessageController extends BaseCRUDController<TheMessage, Long> {
+
+	@Autowired
+	private TheMessageService theMessageService;
+	@Autowired
+	private UserInfoService userInfoService;
+
+	@RequestMapping(value = "")
+	@ResponseBody
+	public String index() {
+		return PARAMS_ERROR;
+	}
+
+	@RequestMapping(value = "list")
+	@ResponseBody
+	public String list(HttpServletRequest request) {
+
+		PageRequest pageRequest = PageRequestBulider.getPageRequest(request);
+
+		Sort sort = null;
+		sort = new Sort(Direction.ASC, "createtime");
+		pageRequest = new PageRequest(pageRequest.getPageNumber(),
+				pageRequest.getPageSize(), sort);
+		Map<String, Object> searchParams = Servlets.getParametersStartingWith(
+				request, "search_");
+		Page<TheMessage> page = this.getServcie().searchByPage(searchParams,
+				pageRequest);
+
+		ajxlist.setSuccess(true);
+
+		ajxlist.setList(page.getContent());
+
+		return GsonUtil.transferByEntity(ajxlist);
+
+	}
+
+	
+	@RequestMapping(value = "getAllMessage")
+	@ResponseBody
+	public String getAllMessage(@RequestParam("uid")Long uid) {
+
+		
+		 List<TheMessage>  theMsgs = this.theMessageService.findByToUserIdOrderCreatetimeAsc(uid);
+		
+		
+
+		ajxlist.setSuccess(true);
+
+		ajxlist.setList(theMsgs);
+
+		return GsonUtil.transferByEntity(ajxlist);
+
+	}
+
+	@RequestMapping(value = "getMessage")
+	@ResponseBody
+	public String getMessage(@RequestParam("uid") Long uid) {
+
+		AjaxResult<TheMessage> themessages = new AjaxResult<TheMessage>();
+		themessages.setSuccess(true);
+		List<TheMessage> msgs = this.theMessageService.getMessages(uid);
+
+		themessages.setList(msgs);
+		if (msgs == null || msgs.size() == 0)
+			return GsonUtil.transferByEntity(themessages);
+		for (TheMessage msg : msgs) {
+
+			msg.setResv1(TheMessage.YES_RED);
+		}
+
+		this.theMessageService.save(msgs);
+
+		return GsonUtil.transferByEntity(themessages);
+
+	}
+
+	@RequestMapping(value = "getMessage1")
+	@ResponseBody
+	public String getMessage1(@RequestParam("uid") Long uid) {
+		PageRequest pageRequest = new PageRequest(0, 1);
+		Map<String, Object> searchParams = new HashMap<String, Object>();
+		searchParams.put("EQ_toUser.id", uid+"");
+		searchParams.put("EQ_resv1","0");
+		AjaxResult<TheMessage> themessages = new AjaxResult<TheMessage>();
+		themessages.setSuccess(true);
+		List<TheMessage> msgs = this.theMessageService.searchByPage(searchParams,
+				pageRequest).getContent();
+
+		themessages.setList(msgs);
+		if (msgs == null || msgs.size() == 0)
+			return GsonUtil.transferByEntity(themessages);
+		for (TheMessage msg : msgs) {
+
+			msg.setResv1(TheMessage.YES_RED);
+		}
+
+		this.theMessageService.save(msgs);
+
+		return GsonUtil.transferByEntity(themessages);
+
+	}
+
+	@RequestMapping(value = "updateMsgStatu")
+	@ResponseBody
+	public String updateMsgStatu(@RequestParam("mid") Long id) {
+
+		TheMessage msg = this.theMessageService.findOne(id);
+		if (msg == null)
+			return RESULT_ERROR;
+		msg.setResv1(TheMessage.YES_RED);
+
+		this.theMessageService.save(msg);
+
+		return RESULT_OK;
+	}
+
+	@RequestMapping(value = "addUserWord")
+	@ResponseBody
+	public String addMessage(@RequestParam("fid") Long fid,
+			@RequestParam("tid") Long tid,
+			@RequestParam("message") String mesString) {
+
+		AjaxResult<TheMessage> ajxlist = new AjaxResult();
+		ajxlist.setSuccess(false);
+
+		try {
+			TheMessage theMessage = new TheMessage();
+			UserInfo u1 = userInfoService.findOne(fid);
+			UserInfo u2 = userInfoService.findOne(66l);
+
+			theMessage.setFromUser(u1);
+			theMessage.setToUser(u2);
+			theMessage.setCreatetime(new Date());
+
+			theMessage.setInfoType(TheMessage.USER_WORD_TYPE);
+			theMessage.setInfo(mesString);
+
+			this.theMessageService.save(theMessage);
+			ajxlist.setSuccess(true);
+			ajxlist.setObj(theMessage);
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		}
+
+		return GsonUtil.transferByEntity(ajxlist);
+
+	}
+
+	@ModelAttribute
+	public void getEntity(
+			@RequestParam(value = "id", defaultValue = "-1") Long id,
+			Model model) {
+		if (id != -1) {
+			model.addAttribute("entity", this.theMessageService.findOne(id));
+		}
+	}
+
+	@Override
+	protected BaseService<TheMessage, Long> getServcie() {
+		return this.theMessageService;
+	}
+
+}

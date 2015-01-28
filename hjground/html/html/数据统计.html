@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html class="">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title id="js-meta-title">广告介绍</title>
+<link rel="stylesheet" href="css/chosen.css" onerror="_cdnFallback(this)">
+<link rel="stylesheet" href="css/jquery.ui.css" onerror="_cdnFallback(this)">
+<link rel="stylesheet" href="css/bootstrap.css" onerror="_cdnFallback(this)">
+<link rel="stylesheet" href="css/pc.css" onerror="_cdnFallback(this)">
+<link rel="stylesheet" href="css/homepage.css" onerror="_cdnFallback(this)">
+<link rel="stylesheet" href="css/app_stat.css" onerror="_cdnFallback(this)">
+<link rel="stylesheet" href="css/app_dashboard.css" onerror="_cdnFallback(this)">
+</head>
+
+<body class="theme theme--blue">
+
+<!-- ▼ Main header -->
+<header class="ui-header">
+    <div class="ui-header-inner clearfix">
+        <h1 class="ui-header-logo"><a href="#"><img src="images/logo2.jpg" alt="聚惠圈"></a></h1>
+        <nav class="ui-header-nav">
+            <ul class="clearfix">
+                 <li class="js-weixin-notify "><a href="#">微信公众号</a></li>
+                 <li class="js-weixin-notify "><a href="#">基础信息</a></li>
+                 <li class="active "><a href="#">网站管理</a></li>
+                 <li class="js-weixin-notify "><a href="#">广告管理</a></li>
+                 <li class="js-weixin-notify "><a href="#">数据统计</a></li>
+            </ul>
+        </nav>
+        <div class="ui-header-user">
+            <div class="dropdown hover dropdown-right">
+                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+                    <span class="txt">
+                        <span class="name">欢迎你，浪客剑心</span>
+                        <span class="divide">/</span>
+                        </span> 设置</span>
+                    </span>
+                    <i class="caret"></i>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">个人设置</a></li>
+                    <li><a href="#">个人设置</a></li>
+                    <li><a href="#">个人设置</a></li>
+                    <li><a href="#">个人设置</a></li>
+                    <li class="divide"></li>
+                    <li><a href="#">退出</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- ▲ Main header -->
+
+<!-- ▼ Main container -->
+<div class="container">
+    <div>
+        <div class="app">
+            <div class="app-inner clearfix">
+                   <div class="app__content js-app-main">
+                  <div>
+                  <div class="js-list-filter-region clearfix ui-box" style="position: relative; min-height: 28px;">
+                    <div class="templates-wrap">
+                        <h2 style="margin:10px 0 30px 0;"><a href="javascript:;" class="ui-btn ui-btn-primary js-create-template">广告位申请单</a><span class="t_back"><a href="#">放弃，返回上一级</a></span></h2>
+                    </div>
+                  </div>
+                  <div id="js-filter" class="filter-wrap" style="margin-top:-30px;">
+                  <table width="100%">
+                    <tbody>
+                        <tr>
+                            <th width="575">
+                            <ul class="js-filter-quickday items-ul">
+                              <li data-tag="sevendays" class="active"><span>今天</span> </li>
+                              <li data-tag="thirtydays"><span>昨天</span></li>
+                              <li data-tag="thirtydays"><span>最近7天</span></li>
+                              <li data-tag="thirtydays"><span>最近30天</span></li>
+                            </ul></th>
+                            <td width="73">
+                                <div class="filter-time">
+                                    <input type="text" class="js-start-time input-medium hasDatepicker" placeholder="开始日期" readonly id="dp1416236183542">
+                                    至
+                                    <input type="text" class="js-end-time input-medium hasDatepicker" placeholder="结束日期" readonly id="dp1416236183543">
+                                </div>
+                               
+                            </td>
+                            <td width="158"> <button class="btn js-reset-bg" type="button" style="float:left;">搜索</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+        </div>
+                    <div id="js-app-content" class="app__content ump-dashboard" style="min-height:0;">    
+                        <div class="js-app-inner app-inner-wrap hide" style="display: block;">
+                    <div id="js-overview" class="overview tj">
+                        <div class="js-cont">
+            
+                <ul class="clearfix">
+                    <li>
+                        <p class="h4">访问数</p>
+                        <p class="info-desc">999</p>
+                    </li>
+                    <li>
+                        <p class="h4">用户数</p>
+                        <p class="info-desc">999</p>
+                    </li>
+                    <li>
+                        <p class="h4">页面停留</p>
+                        <p class="info-desc">00:00:23</p>
+                    </li>
+                    <li>
+                        <p class="h4">广告到店用户</p>
+                        <p class="info-desc">999</p>
+                    </li>
+                     <li>
+                        <p class="h4">直接到店用户</p>
+                        <p class="info-desc">999</p>
+                    </li>
+                    <li class="last-col">
+                        <p class="h4">转化率</p>
+                        <p class="info-desc">23%</p>
+                    </li>
+                </ul>
+            
+            </div>
+                    </div>
+            
+                </div>
+                </div>
+                <div class="templates-wrap">
+                                <h2 style="margin:10px 0 30px 0;">其他统计</h2>
+                                </div>
+            <div class="ui-box">
+                 <table width="100%" border="0" cellspacing="5" cellpadding="0" class="list-tab">
+                      <tr class="list-tab-t">
+                        <td width="10%">访客来源</td>
+                        <td width="25%">访问数</td>
+                        <td width="16%">用户数</td>
+                        <td width="18%">停留时间</td>
+                      </tr>
+                      <tr>
+                        <td>微信</td>
+                        <td>999</td>
+                        <td>999</td>
+                        <td>00：:20：:01</td>
+                      </tr>
+                      <tr>
+                        <td>微信</td>
+                        <td>999</td>
+                        <td>999</td>
+                        <td>00：:20：:01</td>
+                      </tr>
+                </table>
+                <div class="js-list-empty-region"></div>
+            </div>
+            <div class="js-list-footer-region ui-box"><div>
+                <div class="pagenavi">
+                    <span class="total">共 45 条，每页 20 条</span>
+                    <a data-page-num="1" href="javascript:void(0);" class="fetch_page num active" contenteditable="true">1</a>
+                    <a class="fetch_page num" data-page-num="2" href="javascript:void(0);">2</a>
+                    <a class="fetch_page num" data-page-num="3" href="javascript:void(0);">3</a>
+                    <a class="fetch_page next" data-page-num="2" href="javascript:void(0);">下一页</a> </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+            </div>
+        </div>
+        <aside class="ui-sidebar sidebar" style="min-height: 677px;">
+        <nav>
+            <ul>
+                <li>广告管理</li>
+            </ul>
+            <ul>
+                <li><a href="#">网站介绍</a></li>
+            </ul>
+        </nav>            
+          <footer class="ui-footer" style=" margin:50px 0 0 -10px; float:left;">
+               <img src="images/2cod.jpg">
+               <div class="copy_url"><a href="#">复制网址</a></div>
+          </footer>
+        </aside>
+     </div>
+</div>
+</body>
+</html>

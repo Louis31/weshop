@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+         "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+	<session-factory>
+		<property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+		<property name="jdbc.batch_size">20</property>
+		<property name="connection.autocommit">true</property>
+		<!-- create,update,validate,none 创建表设置  -->
+		<property name="hbm2ddl.auto">update</property>
+		
+		<!-- 显示sql语句 -->
+		<property name="show_sql">true</property>
+		<property name="format_sql">true</property>
+		<property name="connection.useUnicode">true</property>
+		<property name="connection.characterEncoding">UTF-8</property>
+
+		<!-- 缓存设置 -->
+	<!-- 	<property name="cache.provider_configuration_file_resource_path">/ehcache.xml</property>
+		<property name="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</property>
+		<property name="cache.use_query_cache">true</property> -->
+		
+		<mapping resource="com/pojo/xml/Bsd.hbm.xml"/>
+		<mapping resource="com/pojo/xml/Bsdsp.hbm.xml"/>
+		<mapping resource="com/pojo/xml/Byd.hbm.xml"/>
+		<mapping resource="com/pojo/xml/Bydsp.hbm.xml"/>
+		<mapping resource="com/pojo/xml/Ckd.hbm.xml"/>
+		
+		<mapping resource="com/pojo/xml/Ckdsp.hbm.xml"/>
+		<mapping resource="com/pojo/xml/Gys.hbm.xml"/>
+		<mapping resource="com/pojo/xml/Jhd.hbm.xml"/>
+		
+		<mapping resource="com/pojo/xml/Jhdsp.hbm.xml"/>
+		<mapping resource="com/pojo/xml/Kh.hbm.xml"/>
+		
+		<mapping resource="com/pojo/xml/Menu.hbm.xml"/>
+		<mapping resource="com/pojo/xml/Role.hbm.xml"/>
+		<mapping resource="com/pojo/xml/Rolemenu.hbm.xml"/>
+		
+		<mapping resource="com/pojo/xml/Spdw.hbm.xml"/>
+		<mapping resource="com/pojo/xml/Splb.hbm.xml"/>
+		<mapping resource="com/pojo/xml/Spxx.hbm.xml"/>
+		
+		<mapping resource="com/pojo/xml/SpxxImage.hbm.xml"/>
+		
+		
+		<mapping resource="com/pojo/xml/Thd.hbm.xml"/>
+		<mapping resource="com/pojo/xml/Thdsp.hbm.xml"/>
+		<mapping resource="com/pojo/xml/Tkd.hbm.xml"/>
+		
+		<mapping resource="com/pojo/xml/Users.hbm.xml"/>
+		<mapping resource="com/pojo/xml/Vusermenu.hbm.xml"/>
+		<mapping resource="com/pojo/xml/Position.hbm.xml"/>
+	</session-factory>
+	
+	
+</hibernate-configuration>

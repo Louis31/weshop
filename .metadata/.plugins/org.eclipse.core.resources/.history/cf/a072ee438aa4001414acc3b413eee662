@@ -1,0 +1,146 @@
+package com.entities;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "information")
+public class Information {
+
+	private long id;
+	private String inforname;//名称
+	private long treeId;//类别ID
+	private String treeName;//类目名称
+	private Date ctime;//发布时间
+	private String author;//发布者
+	@Column(name ="authorid")
+	private String authorid;//发布者
+	private Date utime;//更新时间
+	
+	private String uauthor; //更新者
+	@Column(name ="uauthorid")
+	private String uauthorid; //更新者
+	public String getAuthorid() {
+		return authorid;
+	}
+	public void setAuthorid(String authorid) {
+		this.authorid = authorid;
+	}
+	public String getUauthorid() {
+		return uauthorid;
+	}
+	public void setUauthorid(String uauthorid) {
+		this.uauthorid = uauthorid;
+	}
+	private Integer click;//点击次数
+	private Integer collect;//收藏次数
+	private Integer ptop;//频道置顶,0是否，1是置顶
+	private Integer ftop;//首页置顶，0是否，1是置顶
+	
+	
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  
+	@Column(name ="id",nullable=false)
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
+	@Column(name ="inforname")
+	public String getInforname() {
+		return inforname;
+	}
+	public void setInforname(String inforname) {
+		this.inforname = inforname;
+	}
+	@Column(name ="treeId")
+	public long getTreeId() {
+		return treeId;
+	}
+	public void setTreeId(long treeId) {
+		this.treeId = treeId;
+	}
+	
+	@Column(name ="ctime")
+	public Date getCtime() {
+		return ctime;
+	}
+	public void setCtime(Date ctime) {
+		this.ctime = ctime;
+	}
+	
+	@Column(name ="author")
+	public String getAuthor() {
+		return author;
+	}
+	public void setAuthor(String author) {
+		this.author = author;
+	}
+	
+	@Column(name ="utime")
+	public Date getUtime() {
+		if(utime!=null){}
+		return utime;
+	}
+	public void setUtime(Date utime) {
+		this.utime = utime;
+	}
+	
+	@Column(name ="uauthor")
+	public String getUauthor() {
+		return uauthor;
+	}
+	public void setUauthor(String uauthor) {
+		this.uauthor = uauthor;
+	}
+	
+	@Column(name ="click")
+	public Integer getClick() {
+		return click;
+	}
+	public void setClick(Integer click) {
+		this.click = click;
+	}
+	
+	@Column(name ="collect")
+	public Integer getCollect() {
+		return collect;
+	}
+	public void setCollect(Integer collect) {
+		this.collect = collect;
+	}
+	
+	@Column(name ="treeName")
+	public String getTreeName() {
+		return treeName;
+	}
+	public void setTreeName(String treeName) {
+		this.treeName = treeName;
+	}
+	
+	@Column(name ="ptop")
+	public Integer getPtop() {
+		return ptop;
+	}
+	public void setPtop(Integer ptop) {
+		this.ptop = ptop;
+	}
+	
+	@Column(name ="ftop")
+	public Integer getFtop() {
+		return ftop;
+	}
+	public void setFtop(Integer ftop) {
+		this.ftop = ftop;
+	}
+	
+	
+	
+}

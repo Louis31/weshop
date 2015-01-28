@@ -1,0 +1,6 @@
+0:0:0:0:0:0:0:1 - - [28/Jan/2015:20:23:12 +0800] "GET /WeiShop/login.jsp HTTP/1.1" 200 3376
+0:0:0:0:0:0:0:1 - - [28/Jan/2015:20:23:12 +0800] "GET /WeiShop/static/img/login/logo.gif HTTP/1.1" 200 4412
+0:0:0:0:0:0:0:1 - - [28/Jan/2015:20:23:12 +0800] "GET /WeiShop/static/img/login/reset.gif HTTP/1.1" 200 321
+0:0:0:0:0:0:0:1 - - [28/Jan/2015:20:23:12 +0800] "GET /WeiShop/static/img/login/login_bg.jpg HTTP/1.1" 200 348
+0:0:0:0:0:0:0:1 - - [28/Jan/2015:20:23:12 +0800] "GET /WeiShop/static/img/login/submit.gif HTTP/1.1" 200 344
+0:0:0:0:0:0:0:1 - - [28/Jan/2015:20:23:12 +0800] "GET /WeiShop/static/img/login/bg.jpg HTTP/1.1" 200 473

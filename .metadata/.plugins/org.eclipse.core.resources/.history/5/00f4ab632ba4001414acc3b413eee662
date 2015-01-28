@@ -1,0 +1,103 @@
+﻿package com.entities;
+
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import net.sf.json.JSONArray;
+
+@Entity
+@Table(name = "comment")
+public class Comment {
+
+	private long id;
+	private String spid;//商品ID
+	private String spname;//商品名称
+	private String stars;//星级，用数字表述，例如1就是1星
+	private String reviewer;//评论者
+	private Date revTime;//评论时间
+	private String content;//评论内容
+	private String top;//0是不置顶，1是置顶
+	private String revcon;//评论回复
+	
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  
+	@Column(name ="id",nullable=false)	
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
+	
+	@Column(name ="spid")	
+	public String getSpid() {
+		return spid;
+	}
+	public void setSpid(String spid) {
+		this.spid = spid;
+	}
+	
+	@Column(name ="spname")	
+	public String getSpname() {
+		return spname;
+	}
+	public void setSpname(String spname) {
+		this.spname = spname;
+	}
+	
+	@Column(name ="stars")	
+	public String getStars() {
+		return stars;
+	}
+	public void setStars(String stars) {
+		this.stars = stars;
+	}
+	
+	@Column(name ="reviewer")	
+	public String getReviewer() {
+		return reviewer;
+	}
+	public void setReviewer(String reviewer) {
+		this.reviewer = reviewer;
+	}
+	
+	@Column(name ="revTime")	
+	public Date getRevTime() {
+		return revTime;
+	}
+	public void setRevTime(Date revTime) {
+		this.revTime = revTime;
+	}
+	
+	@Column(name ="content")	
+	public String getContent() {
+		return content;
+	}
+	public void setContent(String content) {
+		this.content = content;
+	}
+	
+	@Column(name ="top")	
+	public String getTop() {
+		return top;
+	}
+	public void setTop(String top) {
+		this.top = top;
+	}
+	
+	@Column(name ="revcon")	
+	public String getRevcon() {
+		return revcon;
+	}
+	public void setRevcon(String revcon) {
+		this.revcon = revcon;
+	}
+	
+	
+}

@@ -1,0 +1,11 @@
+package com.pojo;
+
+import java.util.Date;
+
+public class SpxxImage {
+     private Integer id;
+     private String url;
+     private String spid;
+     private String content;
+     
+}

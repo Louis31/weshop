@@ -1,0 +1,48 @@
+package com.service;
+
+import java.util.List;
+
+import com.cxstock.utils.pubutil.Page;
+import com.entities.Comment;
+
+public interface CommentBiz {
+	
+	/**
+	 * 提交评论
+	 */
+	public void saveComment(Comment comment);
+
+	/**
+	 * 根据星级获取评论总数目, 例如1到3，就是1星到3星的数目，包括边界值
+	 */
+	public int getCommentNumByStar(String starbegin,String starend);
+	
+	/**
+	 * 根据星级，分页获取评论
+	 */
+	public List<Comment> getCommentByStar(String starbegin,String starend,int page,int pageSize);
+	
+	public Page getCommentByStar(String star,Page page);
+	public Page getCommentByLang(String star,String end,Page page);
+	
+	public List<Comment> getComment(int page, int pageSize);
+	
+	/**
+	 * 回复评论
+	 */
+	public void revComment(String commendId,String revcon);
+	
+	/**
+	 * 评论修改
+	 */
+	public void updateComment(Comment Comment);
+	
+	public void deleteComment(Long id);
+	
+	/**
+	 * 评论修改
+	 */
+	public void topComment(String commendId);
+	
+	public void showFlageComment(String commendId);
+}

@@ -1,0 +1,43 @@
+package com.service.impl;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.cxstock.dao.BaseDAO;
+import com.pojo.SpxxImage;
+import com.service.SpxxImageBiz;
+
+@Transactional
+@Service
+public class SpxxImageBizImpl implements SpxxImageBiz {
+
+	@Resource
+	private BaseDAO baseDao;
+	public void setBaseDao(BaseDAO baseDao) {
+		this.baseDao = baseDao;
+	}
+	
+	@Override
+	public void save(SpxxImage dto) {
+		baseDao.save(dto);
+	}
+
+	@Override
+	public void updateSpxx(SpxxImage dto) {
+		//SpxxImage spxxImages = (SpxxImage)baseDao.loadById(SpxxImage.class, dto.getId());
+		
+	}
+
+	@Override
+	public boolean deleteSpxx(Integer id) {
+		SpxxImage spxxImages = (SpxxImage)baseDao.loadById(SpxxImage.class,id);
+		if(spxxImages!=null){
+			baseDao.delete(spxxImages);
+			return true;
+		}
+		return false;
+	}
+
+}

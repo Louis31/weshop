@@ -1,0 +1,166 @@
+@charset "utf-8";
+/* �й����л����̳�-����ʽ���� CSS Document*/
+
+.log-ul01-aa{float:left;display:inline;}
+.log-li01-aa{float:left;width:200px;height:50px;line-height:50px; vertical-align:middle;text-align:right;padding-right:5px;}
+.log-li02-aa{float:left;width:450px;height:50px;line-height:50px; vertical-align:middle; text-align:left;}
+.log-li03-aa{float:left;width:450px;height:50px;line-height:60px;padding-left:205px;vertical-align:middle; text-align:left;}
+.log_input01{float:left;width:200px;height:28px;line-height:28px;border:#d4d4d4 solid 1px;margin-top:12px;padding-left:6px;margin-right:10px;color:#666;font-size:12px;}
+.log_btn01,.log_btn02{background:#64a7eb;height:30px;padding:0 34px;margin-top:15px;line-height:30px;color:#fff; cursor:pointer;cursor:hand; font-size:12px;}
+.log_btn02{background:#fe6e6d;margin-left:20px;}
+.log-btn { width:200px;}
+.sp-ch01{padding-bottom:40px; text-align:center;}
+.sp-select04{height:30px;border:#ccc solid 1px;line-height:30px;width:180px;color:#666;padding-left:10px;margin-left:12px;}
+.sp-input03{padding:0 30px;height:32px;line-height:32px;background:#ffa53c;color:#fff;border:none;cursor:pointer;cursor:hand;}
+.sp-select05,.sp-input05{float:left;height:30px;border:#d4d4d4 solid 1px;line-height:30px;width:70px;color:#666;margin-left:5px;margin-top:12px;}
+.sp-select06{margin-left:0;}
+.sp-input05{height:28px;line-height:28px;width:160px;padding-left:8px;margin-left:5px;}
+
+
+.bz1 div{padding:30px 0;}
+.bzinput01,.bzinput02{background:#64a7eb;height:30px;margin-top:15px;line-height:30px;color:#fff; cursor:pointer;cursor:hand; font-size:12px;}
+.bzinput02{background:#fe6e6d;margin-left:20px;}
+/* input */
+.ipt {
+	border: solid 1px #d2d2d2;
+	border-left-color: #ccc;
+	border-top-color: #ccc;
+	border-radius: 2px;
+	box-shadow: inset 0 1px 0 #f8f8f8;
+	background-color: #fff;
+	padding: 4px 6px;
+	height: 21px;
+	line-height: 21px;
+	color: #555;
+	width: 180px;
+	vertical-align: baseline;
+}
+.ipt-mini {
+	width: 140px;
+	padding: 1px 3px;
+}
+.ipt:focus {
+	border-color: #95C8F1;
+	box-shadow: 0 0 4px #95C8F1;
+}
+/* btn */
+
+
+
+.theme-buy {
+
+	text-align: center;
+}
+.theme-gobuy, .theme-signin {
+	font-size: 15px;
+}
+.theme-price {
+	position: relative;
+	bottom: -6px;
+	font-family: microsoft yahei, Arial, Helvetica, sans-serif;
+	margin-right: 20px;
+	font-weight: bold;
+	color: #f60;
+	line-height: 32px;
+	font-size: 24px;
+	display: inline-block;
+}
+.theme-price dfn {
+	font-style: normal;
+	font-size: 18px;
+	margin-right: 2px;
+}
+.theme-desc {
+	padding: 30px;
+}
+.theme-version {
+	padding: 30px;
+}
+.theme-popover-mask {
+	z-index: 9998;
+	position:fixed;
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
+	background:#000;
+	opacity:0.2;
+	filter:alpha(opacity=30);
+	-moz-opacity:0.2;
+	display:none;
+}
+.theme-popover {
+	z-index:9999;
+	position:fixed;
+	top:55%;
+	left:50%;
+	width:660px;
+	height:auto;
+	margin:-180px 0 0 -330px;
+	border-radius:5px;
+	border:solid 2px #666;
+	background-color:#fff;
+	display:none;
+	box-shadow: 0 0 10px #666;
+}
+.theme-poptit {
+	border-bottom:1px solid #ddd;
+	height:32px;
+	line-height:32px;
+	padding:0 14px;
+	text-align:left;
+	position: relative;
+}
+.theme-poptit span { float:left;}
+/********���ݸ߶�*********/
+
+.theme-popbod {
+	padding:40px 0px 60px;
+	color:#444;
+	
+}
+.dl-address{padding-top:25px;}
+.theme-popbom {
+	height:35px;
+	background-color:#f6f6f6;
+	border-top:1px solid #ddd;
+	border-radius:0 0 5px 5px;
+	color:#666
+}
+.theme-popbom a { float:right;
+	
+}
+.theme-poptit .close {
+	float:right;
+	color:#999;
+	font-weight:bold;
+
+}
+.theme-poptit .close:hover {
+	color:#444;
+}
+.btn.theme-reg {
+	position: absolute;
+	top: 8px;
+	left: 43%;
+	display: none
+}
+.inp-gray, .feed-mail-inp {
+	border:1px solid #ccc;
+	background-color:#fdfdfd;
+	width:220px;
+	height:16px;
+	padding:4px;
+	color:#444;
+	margin-right:6px
+}
+
+.info-tips {
+	width: 90%;
+	height: 50px;
+	background: url(../images/qrzf_04.png) no-repeat;
+	background-position-y: 10px;
+	background-position-x: 10px;
+	clear: both;
+}
+.info-tips p { text-align:left; float:left; margin-left:50px;}
